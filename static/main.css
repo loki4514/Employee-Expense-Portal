@@ -1,4 +1,47 @@
-#container {
+
+h1 {
   text-align: center;
-  color : blue;
+  font-size: 30px;
+  color : darkblue;
+  font-weight: bold;
 }
+
+.container {
+  
+  font-weight: bold;
+  color: black;
+
+}
+
+.nav-link.a1 {
+
+  
+  font-weight: bold;
+  color: black;
+
+}
+
+#container {
+  margin: 0 auto;
+  width: 50%;
+  text-align: center;
+  
+}
+
+button {
+  background-color: 576CBC;
+  color: black;
+  padding: 14px 20px;
+  margin: 8px 0;
+  font-weight: bold;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  width: 100%;
+}
+
+button:hover {
+  background-color: rgb(142, 142, 237);
+}
+
+
