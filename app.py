@@ -45,11 +45,14 @@ def update():
 def login():
     form = LoginForm()
     if form.validate_on_submit():
-        if form.username.data == 'loki' and form.password.data == '1234':
-            flash('Sucessfully logged in')
+        if form.username.data == "abc" and  form.password.data == "1234":
+            flash('Sucessfully logged in','success')
             return redirect(url_for('admin'))
+        
         else:
             flash('Invalid username or password.', 'danger')
+            return redirect(url_for('login'))
+            
     
     return render_template('login.html', title='Login', form=form)
 
