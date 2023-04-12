@@ -3,6 +3,8 @@ from flask import Flask,render_template
 
 app = Flask(__name__)
 
+app.config['SECRET_KEY'] = '8e7b334da419398c10724c396620c7c4'
+
 
 posts = [
     

@@ -13,12 +13,8 @@ h1 {
 
 }
 
-.nav-link.a1 {
-
-  
-  font-weight: bold;
-  color: black;
-
+.nav-link {
+  color: black !important;
 }
 
 #container {
@@ -44,4 +40,19 @@ button:hover {
   background-color: rgb(142, 142, 237);
 }
 
+#form1 {
+  width: 360px;
+  height: 620px;
+  margin: auto;
+  text-align: center;
+  font-weight: bold;
+  border-radius: 3px;
+}
 
+form {
+  width : 300px;
+
+}
+form label{
+  display: flex;
+}
