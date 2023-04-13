@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField,PasswordField,SubmitField,BooleanField,EmailField
+from wtforms import StringField,PasswordField,SubmitField,BooleanField,EmailField,RadioField
 from wtforms.validators import DataRequired,Length,Email,EqualTo
 
 
@@ -21,4 +21,13 @@ class LoginForm(FlaskForm):
     password = PasswordField('Password',validators=[DataRequired()])
     submit = SubmitField('Login')
     
-    
+class CreateEmployee(FlaskForm):
+    employeeid = StringField('Employee Id',validators=[DataRequired(),Length(2,10)])
+    name = StringField('Employee Name',validators=[DataRequired(),Length(2,20)])
+    email = EmailField('Employee Email',validators=[DataRequired(),Length(2,30)])
+    password = PasswordField('Employee Password',validators=[DataRequired()])
+    confirm_password = PasswordField('Confirm Password',validators=[DataRequired(),EqualTo(password)])
+    role = RadioField('Employee Type', choices=[('employee', 'Employee'), ('manager', 'Manager')], validators=[DataRequired()])
+    man_name = StringField('Manager Name',validators=[DataRequired(),Length(2,20)])
+    managerid = StringField("Manager Id",validators=[DataRequired(),Length(2,20)])
+    submit = SubmitField('Create Account')

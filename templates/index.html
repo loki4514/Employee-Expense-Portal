@@ -18,9 +18,11 @@
 
         <h1 > Greetings from the Employee Expense Portal.</h1>
         <br>
+        <div>
         <a href="{{ url_for('admin') }}"><button>Admin</button></a>
         <a href="{{ url_for('employee') }}"><button>Employee</button></a>
         <a href="{{ url_for('manager') }}"><button>Manager</button></a>
+        </div>
     
     {% endblock %}
 

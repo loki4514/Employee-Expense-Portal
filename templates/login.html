@@ -1,6 +1,8 @@
 {% extends "index.html" %}
 {% block content %}
-    <div class="content-section">
+
+<div class = "container">
+    <div class="content-section mx-auto">
         <form method="POST" action="">
             {{ form.hidden_tag() }}
             <fieldset class="form-group">
@@ -44,5 +46,5 @@
             </small>
         </form>
     </div>
-    
+</div>
 {% endblock content %}

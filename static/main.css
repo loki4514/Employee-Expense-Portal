@@ -7,9 +7,10 @@ h1 {
 }
 
 .container {
-  
+  align-items: center;
   font-weight: bold;
   color: black;
+  justify-content: center;
 
 }
 
@@ -63,6 +64,34 @@ form label{
   align-items: center;
   width : 100%;
 } 
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  
+}
 
+.content-section {
+  max-width: 400px;
+  width: 100%;
+}
+.navbar {
+  background-color: lightblue;
+  font-weight: bold;
+}
 
+.navbar-nav {
+  align-items: center;
+  justify-content: flex-end;
+  color: black;
+  font-weight: bold;
+}
+
+.nav-link {
+  color: black;
+}
+
+.card {
+  text-align: center;
+}
 

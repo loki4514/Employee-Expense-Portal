@@ -1,24 +1,29 @@
-{% extends "index.html" %}
+{% extends 'index.html' %}
 {% block content %}
-    <div class="content-section">
-        <form method="POST" action="">
-            {{ form.hidden_tag() }}
-            <fieldset class="form-group">
-                <legend class="border-bottom mb-4">Create Account</legend>
-                <div class="form-group">
-                    {{ form.username.label(class="form-control-label") }}
 
-                    {% if form.username.errors %}
-                        {{ form.username(class="form-control form-control-lg is-invalid") }}
+<div class="container-fluid">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body text-center">
+            <form method="POST" action="">
+                {{form.hidden_tag()}}
+                <legend class="text-center mb-4">Create Employee's Account</legend>
+                <div class="form-group">
+                    {{ form.employeeid.label(class="form-control-label") }}
+
+                    {% if form.employeeid.errors %}
+                        {{ form.employeeid(class="form-control form-control-lg is-invalid") }}
                         <div class="invalid-feedback">
-                            {% for error in form.username.errors %}
+                            {% for error in form.employeeid.errors %}
                                 <span>{{ error }}</span>
                             {% endfor %}
                         </div>
                     {% else %}
-                        {{ form.username(class="form-control form-control-lg") }}
+                        {{ form.employeeid(class="form-control form-control-lg") }}
                     {% endif %}
                 </div>
+
                 <div class="form-group">
                     {{ form.name.label(class="form-control-label") }}
 
@@ -30,7 +35,7 @@
                             {% endfor %}
                         </div>
                     {% else %}
-                        {{ form.name(class="form-control form-control-lg") }}
+                        {{ form.name(class="form-control form-control-lg width:80%") }}
                     {% endif %}
                 </div>
 
@@ -73,17 +78,59 @@
                         {{ form.confirm_password(class="form-control form-control-lg") }}
                     {% endif %}
                 </div>
-            </fieldset>
-            <div class="form-group">
-                {{ form.submit(class="btn btn-outline-info") }}
-            </div>
-            
 
-        </form>
+                <div class="form-group">
+                    {{ form.role.label(class="form-control-label") }}
+                    {% for subfield in form.role %}
+                        <div class="form-check">
+                            {{ subfield(class="form-check-input") }}
+                            {{ subfield.label(class="form-check-label") }}
+                        </div>
+                    {% endfor %}
+                </div>
+                
+                <div class="form-group">
+                    {{ form.man_name.label(class="form-control-label") }}
+                    {% if form.man_name.errors %}
+                        {{ form.man_name(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.man_name.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.man_name(class="form-control form-control-lg") }}
+                    {% endif %}
+                </div>
+
+                <div class="form-group">
+                    {{ form.managerid.label(class="form-control-label") }}
+                    {% if form.managerid.errors %}
+                        {{ form.managerid(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.managerid.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.managerid(class="form-control form-control-lg") }}
+                    {% endif %}
+                </div>
+
+
+
+
+                <div class="form-group">
+                    {{ form.submit(class="btn btn-outline-info") }}
+                </div>
+                
+            </form>
+            </div>
+        </div>
+        </div>
     </div>
-    <div class="border-top pt-3">
-        <small class="text-muted">
-            Already Have An Account? <a class="ml-2" href="{{ url_for('login') }}">Sign In</a>
-        </small>
     </div>
-{% endblock content %}
+    
+    
+
+{% endblock %}
