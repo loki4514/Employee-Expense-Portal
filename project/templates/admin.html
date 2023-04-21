@@ -1,0 +1,52 @@
+{% extends 'index.html' %}
+{% block content %}
+<nav  class="navbar navbar-expand-lg navbar-light bg-light blue">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">Hello, {{current_user.name}}</a>
+  </div>
+  <div class="container-fluid">
+    <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+      <ul class="navbar-nav">
+        
+        <li class="nav-item">
+          <a href="{{url_for('logout')}}" class="nav-link a1" style="color: black;">Log out</a>
+        </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+</nav>
+
+<div class="row">
+  <div class="col-md-8 mx-auto text-center">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="alert alert-{{ category }} text-danger">
+            {{ message }}
+          </div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+  </div>
+</div>
+
+
+<br>
+<br>
+
+<div class="d-flex flex-wrap justify-content-center">
+  <a href="{{ url_for('create') }}"><button >Create Employee</button></a>
+</div>
+<br>
+<div class="d-flex flex-wrap justify-content-center">
+  <a href="{{ url_for('update') }}"><button >Update Employee</button></a>
+</div>
+<br>
+<div class="d-flex flex-wrap justify-content-center">
+  <a href="{{ url_for('delete') }}"><button >Delete Employee</button></a>
+</div>
+
+
+{% endblock %}

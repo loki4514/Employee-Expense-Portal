@@ -1,0 +1,6 @@
+Flask
+datetime
+flask-mail
+SQLAlchemy
+flask-login
+flask-bcrypt
