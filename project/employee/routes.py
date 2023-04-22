@@ -9,7 +9,7 @@ employees = Blueprint('employees',__name__)
 
 
 
-@employees.route("/employee/emp", methods=["GET", "POST"])
+@employees.route("/employee", methods=["GET", "POST"])
 @login_required
 def employee():
     form = ExpenseForm()

@@ -9,7 +9,7 @@ from project.admin.utlis import send_reset_email
 admins = Blueprint('admins',__name__)
 
 
-@admins.route("/admin/login")
+@admins.route("/admin")
 @login_required
 def admin():
     return render_template('admin.html')
