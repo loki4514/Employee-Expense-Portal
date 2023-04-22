@@ -1,19 +1,20 @@
-from datetime import datetime
-from project import db,login_manager,app
+
+from project import db,user_login_manager
+# ,emp_login_manager
+from flask import current_app
 from itsdangerous import URLSafeTimedSerializer as Serializer
-# from project import emp_login_manager
+from project import emp_login_manager
 from flask_login import UserMixin
 # UserMixin 
 
 # it handles user login,user logout and authencation in general it handles user login session
-@login_manager.user_loader
-def load_user(user_id):
-    return User.query.get(user_id)
+@user_login_manager.user_loader
+def load_user(id):
+    return User.query.get(id)
 
-# @emp_login_manager.user_loader
-# def load_employee(employeeid):
-#     return Employee.query.get(int(employeeid))
-
+@emp_login_manager.user_loader
+def load_emp(employeeid):
+    return Employee.query.get(employeeid)
 
 
 class User(db.Model,UserMixin):
@@ -24,12 +25,12 @@ class User(db.Model,UserMixin):
     # image_file = db.Column(db.string(20),unique=True,nullable=False)
     
     def get_reset_index(self,expires_sec=1800):
-        s = Serializer(app.config['SECRET_KEY'],expires_sec)
+        s = Serializer(current_app.config['SECRET_KEY'],expires_sec)
         return s.dumps({'user_id':self.id}).decode('utf-8')
     
     @staticmethod
     def verify_token(token):
-        s = Serializer(app.config['SECRET_KEY'])
+        s = Serializer(current_app.config['SECRET_KEY'])
         try:
             id = s.loads(token)['user_id']
         except:
@@ -58,6 +59,8 @@ class Employee(db.Model,UserMixin):
     man_name = db.Column(db.String(30),nullable=False)
     managerid = db.Column(db.String(10), nullable=False)
     
+    # def get_id(self):
+    #     return str(self.employeeid)
     
     
     
@@ -72,6 +75,8 @@ class Expense(db.Model):
     picture = db.Column(db.LargeBinary, nullable=True)
     managerid = db.Column(db.String(20), nullable=False)
     status = db.Column(db.String(20), nullable=False, default='pending')
+    
+    
 
     def __repr__(self):
         return f"Expense(empid={self.empid}, date={self.date}, amount={self.amount}, managerid={self.managerid}, status={self.status},picture = {self.picture})"

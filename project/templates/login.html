@@ -57,9 +57,13 @@
                 {{ form.submit(class="btn btn-outline-info") }}
             </div>
             <small class="text-muted ml-2">
-                <a href={{url_for('reset_password')}}>Forgot Password?</a>
+                <a href={{url_for('admins.reset_password')}}>Forgot Password?</a>
             </small>
         </form>
+        <div class="border-top pt-3">
+            <small class="text-muted">
+                Don't have account create one. <a class="ml-2" href="{{ url_for('admins.register') }}">Create Account</a>
+            </small>
     </div>
 </div>
 {% endblock content %}
