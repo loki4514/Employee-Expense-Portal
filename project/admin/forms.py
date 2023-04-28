@@ -22,7 +22,7 @@ class RegistrationForm(FlaskForm):
     
     
 class LoginForm(FlaskForm):
-    email = StringField('email',validators=[DataRequired(),Length(2,20)])
+    email = StringField('Email',validators=[DataRequired(),Length(2,20)])
     remember = BooleanField('Remember Me')
     password = PasswordField('Password',validators=[DataRequired()])
     submit = SubmitField('Login')
@@ -115,3 +115,8 @@ class RequestRestForm(FlaskForm):
 class ResetPassword(FlaskForm):
     password = PasswordField('Employee Password',validators=[DataRequired()])
     confirm_password = PasswordField('Confirm Password',validators=[DataRequired(),EqualTo('password')])
+    
+    
+class VerifyForm(FlaskForm):
+    otp = StringField('Enter Your Otp',validators=[DataRequired()])
+    submit = SubmitField('Proceed')

@@ -95,3 +95,28 @@ form label{
   text-align: center;
 }
 
+/* #status {
+  font-size: 20px;
+  font-weight: bold;
+  color: green;
+  align-items: center;
+} */
+
+table {
+  width: 100%;
+  max-width: 100%;
+  margin-bottom: 1rem;
+  background-color: transparent;
+}
+
+th, td {
+  padding: .75rem;
+  vertical-align: top;
+  border-top: 1px solid #dee2e6;
+  text-align: center;
+}
+
+th {
+  background-color: #6c757d;
+  color: #fff;
+}

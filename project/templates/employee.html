@@ -2,12 +2,15 @@
 {% block content%}
 <nav  class="navbar navbar-expand-lg navbar-light bg-light blue">
     <div class="container-fluid">
-      <a class="navbar-brand" href="#">Hello {{current_user.name}}</a>
+      <a class="navbar-brand" href="#">Hello {{session['name']}}</a>
     </div>
     <div class="container-fluid">
       <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
         <ul class="navbar-nav">
-          
+          <li class="nav-item">
+            <a href="{{url_for('employees.approve')}}" class="nav-link a1" style="color: black;">Status</a>
+          </li>
+      
           <li class="nav-item">
             <a href="{{url_for('employees.logout')}}" class="nav-link a1" style="color: black;">Log out</a>
           </li>
@@ -18,7 +21,21 @@
   </nav>
   </nav> 
 
+  <div class="row">
+    <div class="col-md-8 mx-auto text-center">
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          {% for category, message in messages %}
+            <div class="alert alert-{{ category }} text-danger">
+              {{ message }}
+            </div>
+          {% endfor %}
+        {% endif %}
+      {% endwith %}
+    </div>
+  </div>
 
+  
   <div class="container">
     <div class="content-section mx-auto">
       <form method="POST" action=""  enctype="multipart/form-data">
@@ -53,10 +70,10 @@
         </div>
         
         <div class="form-group">
-          {{ form.picture.label() }}
-          {{ form.picture(class="form-control-file") }}
-          {% if form.picture.errors %}
-              {% for error in form.picture.errors %}
+          {{ form.image_file.label() }}
+          {{ form.image_file(class="form-control-file") }}
+          {% if form.image_file.errors %}
+              {% for error in form.image_file.errors %}
                 <span class = "text-danger">{{ error }}</span>
               {% endfor %}
           {% else %}

@@ -3,7 +3,7 @@ from project import db,user_login_manager
 # ,emp_login_manager
 from flask import current_app
 from itsdangerous import URLSafeTimedSerializer as Serializer
-from project import emp_login_manager
+# from project import emp_login_manager
 from flask_login import UserMixin
 # UserMixin 
 
@@ -12,9 +12,9 @@ from flask_login import UserMixin
 def load_user(id):
     return User.query.get(id)
 
-@emp_login_manager.user_loader
-def load_emp(employeeid):
-    return Employee.query.get(employeeid)
+# @emp_login_manager.user_loader
+# def load_emp(employeeid):
+#     return Employee.query.get(employeeid)
 
 
 class User(db.Model,UserMixin):
@@ -24,15 +24,19 @@ class User(db.Model,UserMixin):
     password = db.Column(db.String(60),nullable=False)
     # image_file = db.Column(db.string(20),unique=True,nullable=False)
     
-    def get_reset_index(self,expires_sec=1800):
-        s = Serializer(current_app.config['SECRET_KEY'],expires_sec)
-        return s.dumps({'user_id':self.id}).decode('utf-8')
+    # here serilaize the secret key which is valid for 30 minutes and many more
+    def get_reset_index(self):
+        s = Serializer(current_app.config['SECRET_KEY'])
+        # passing a secrete key and expiring time so that it return a token only accessed by user only
+        return s.dumps({'user_id':self.id})
+        # serialize the data in the form of bytes and transmit over the network 
     
     @staticmethod
+    # token accepts as a parameter 
     def verify_token(token):
         s = Serializer(current_app.config['SECRET_KEY'])
         try:
-            id = s.loads(token)['user_id']
+            id = s.loads(token,max_age=300)['user_id']
         except:
             return None
         return User.query.get(id)
@@ -50,7 +54,7 @@ class User(db.Model,UserMixin):
 #     def __repr__(self):
 #         return f"User('{self.username},{self.name},{self.email}')"
     
-class Employee(db.Model,UserMixin):
+class Employee(db.Model):
     employeeid = db.Column(db.String(10),primary_key=True)
     name = db.Column(db.String(20),nullable=False)
     email = db.Column(db.String(20),unique=True,nullable=False)
@@ -61,22 +65,34 @@ class Employee(db.Model,UserMixin):
     
     # def get_id(self):
     #     return str(self.employeeid)
+    def get_reset_token_employee(self):
+        s = Serializer(current_app.config['SECRET_KEY'])
+        return s.dumps({'user_id':self.employeeid})
     
+    @staticmethod
+    def verify_reset_token_employee(token):
+        s = Serializer(current_app.config['SECRET_KEY'])
+        try:
+            user_id = s.loads(token, max_age=300)['user_id']
+        except:
+            return "Maybe there is error in creating and loading the token"
+        return Employee.query.get(user_id)
     
     
     def __repr__(self):
-        return f"Employee('{self.name},{self.email},{self.role},{self.man_name},{self.managerid}')"
+        return f"Employee('{self.employeeid},{self.name},{self.email},{self.role},{self.man_name},{self.managerid}')"
     
     
 class Expense(db.Model):
-    empid = db.Column(db.String(20),primary_key=True, nullable=False)
+    claimid = db.Column(db.String(20),primary_key = True,nullable = False)
+    empid = db.Column(db.String(20), nullable=False)
     date = db.Column(db.Date, nullable=False)
     amount = db.Column(db.Float, nullable=False)
-    picture = db.Column(db.LargeBinary, nullable=True)
+    image_file = db.Column(db.String(20), nullable=False)
     managerid = db.Column(db.String(20), nullable=False)
     status = db.Column(db.String(20), nullable=False, default='pending')
     
-    
+
 
     def __repr__(self):
-        return f"Expense(empid={self.empid}, date={self.date}, amount={self.amount}, managerid={self.managerid}, status={self.status},picture = {self.picture})"
+            return f"Expense(claimid = {self.claimid},empid={self.empid}, date={self.date},image file = {self.image_file}, amount={self.amount}, managerid={self.managerid}, status={self.status})"

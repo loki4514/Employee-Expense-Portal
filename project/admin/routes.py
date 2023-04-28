@@ -1,10 +1,16 @@
-from flask import (Blueprint,flash,render_template,url_for,redirect,request)
-from flask_login import current_user,login_required,logout_user,login_user,login_manager,set_login_view
-from project import db,bcrypt,user_login_manager
+from flask import (Blueprint,flash,render_template,url_for,redirect,request,session,make_response)
+from flask_login import current_user,login_required,logout_user,login_user
+from project import db,bcrypt
 from project.models import User,Employee
-from project.admin.forms import (RegistrationForm,RequestRestForm,LoginForm,
+from project.admin.forms import (RegistrationForm,RequestRestForm,LoginForm,VerifyForm,
                                 ResetPassword,CreateEmployee,UpdateEmployee,DeleteForm)
-from project.admin.utlis import send_reset_email
+from project.admin.utlis import send_otp_email,send_reset_email
+from datetime import datetime
+import pytz
+# from datetime import datetime
+
+# aware_datetime = datetime.now(pytz.utc)
+# naive_datetime = aware_datetime.astimezone(pytz.utc).replace(tzinfo=None)
 
 admins = Blueprint('admins',__name__)
 
@@ -17,21 +23,54 @@ def admin():
 
 
 # Create Employee details
-@admins.route("/register", methods=["GET","POST"])
+@admins.route("/register", methods=["GET", "POST"])
 def register():
-    # creating a registration form passing as an instance
+    form1 = RegistrationForm()
+    form2 = VerifyForm()
+    otp = None 
+    expiry_time = None
+    if form1.validate_on_submit():
+        hashed_password = bcrypt.generate_password_hash(form1.password.data).decode('utf-8')
+        user = User(name=form1.name.data, email=form1.email.data, password=hashed_password)
+        sendermail = form1.email.data
+        companymail = ['lokeshrk89@gmail.com']
+        # send the OTP to the company's email address
+        otp, expiry_time = send_otp_email(sendermail, companymail)
+        flash("An OTP has been sent to your organization email")
+        return redirect(url_for('admins.verify_email'))
+    elif form2.validate_on_submit():
+        if otp == form2.otp.data and expiry_time > datetime.now(pytz.utc):
+            db.session.add(user)
+            db.session.commit()
+            flash("Your account has been created!", 'success')
+            return redirect(url_for('admins.login'))
+        else:
+            flash("Invalid OTP. Please try again.", 'danger')
+    return render_template('register.html', title='Create Account', form1=form1, form2=form2)
 
-    form = RegistrationForm()
-    if form.validate_on_submit():
-        hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
-        user = User( name = form.name.data, email = form.email.data, password = hashed_password)
-        db.session.add(user)
-        db.session.commit()
-        flash(f"Your Account created has been created !",'success')
-        return redirect(url_for('admins.login'))
-    
-    return render_template('register.html',title='Create Account',form=form)
 
+# @admins.route("/verify_email/<email>", methods=["GET", "POST"])
+# def verify_email(email):
+#     form = VerifyForm()
+#     otp = session.get('otp')
+#     expiry_time = session.get('expiry_time')
+#     print(otp,expiry_time,datetime.now())
+#     if otp and expiry_time and form.validate_on_submit():
+#         if otp == form.otp.data and expiry_time > datetime.now(pytz.utc):
+#             hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
+#             user = User(name=form.name.data, email=email, password=hashed_password)
+#             db.session.add(user)
+#             db.session.commit()
+#             flash(f"Your Account has been created!", 'success')
+#             return redirect(url_for('admins.login'))
+#         else:
+#             flash(f"Invalid OTP. Please try again.", 'danger')
+#             return redirect(url_for('admins.verify_email', email=email))
+#     return render_template('verify_email.html', title='Verify Email', form=form, email=email)
+@admins.route('/verify-email', methods=['GET', 'POST'])
+def verify_email():
+    form2 = VerifyForm()
+    return render_template('verify_email.html',form2=form2)
 
 
 
@@ -56,6 +95,7 @@ def login():
 
 
 @admins.route("/create",methods = ["GET","POST"])
+
 def create():
     form = CreateEmployee()
     if form.validate_on_submit():
@@ -66,10 +106,12 @@ def create():
                             role = form.role.data,
                             man_name = form.man_name.data,
                             managerid = form.managerid.data)
+        
+            
         db.session.add(employee)
         db.session.commit()
-        flash(f"Your Account created has been created !",'success')
-        return redirect(url_for('main.index'))
+        flash(f"A new employee has been created !",'success')
+        return redirect(url_for('admins.admin'))
         
     return render_template('create.html',title = "Create Employee",form = form)
 
@@ -77,7 +119,7 @@ def create():
 @admins.route("/update", methods=["GET", "POST"])
 def update():
     form = UpdateEmployee()
-
+    
     if form.validate_on_submit():
         employee = Employee.query.filter_by(employeeid=form.employeeid.data).first()
         if employee:
@@ -116,7 +158,7 @@ def delete():
         return redirect(url_for('admins.admin'))
     return render_template('delete.html',title = 'Delete Employee',form = form)
 
-    
+
 
 @admins.route("/reset_password",methods=["GET",'POST'])
 def reset_password():
@@ -127,7 +169,7 @@ def reset_password():
         user = User.query.filter_by(email=form.email.data).first()
         # now we fetched the user from the database providing the user a passowrd rset link
         send_reset_email(user)
-        flash('An Email has been sent with instruction to reset your password')
+        flash('An Email has been sent with instruction to reset your password. This email will valid for 5 minutes.')
         return redirect(url_for('admins.login'))
     return render_template('reset_password.html',title='Reset Password',form = form)
 
@@ -137,18 +179,21 @@ def reset_token(token):
         return redirect(url_for('main.index'))
     user = User.verify_token(token)
     if user is None:
-        flash('That is an invalid or expired token','warning')
+        flash('This is an invalid or expired token','warning')
         return redirect(url_for('admins.reset_password'))
     form = ResetPassword()
     if form.validate_on_submit():
         hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
         user.password = hashed_password
         db.session.commit()
-        flash(f"Your Account created has been created !",'success')
-        return redirect(url_for('login'))
+        flash(f"Your Password has been reset successfully!",'success')
+        return redirect(url_for('admins.login'))
     return render_template('reset_token.html',form = form)
 
 @admins.route("/logout")
+
 def logout():
     logout_user()
-    return redirect(url_for('admins.admin'))
+    session.clear()
+    session.pop('_flashes', None)  # Clear flashed messages
+    return redirect(url_for('main.index'))

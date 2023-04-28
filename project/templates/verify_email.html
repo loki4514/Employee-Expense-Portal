@@ -1,0 +1,39 @@
+{% extends 'index.html' %}
+{% block content %}
+<div class="row">
+    <div class="col-md-8 mx-auto text-center">
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          {% for category, message in messages %}
+            <div class="alert alert-{{ category }} text-danger">
+              {{ message }}
+            </div>
+          {% endfor %}
+        {% endif %}
+      {% endwith %}
+    </div>
+  </div>
+  
+
+<form method= 'POST' action = "">
+    {{ form2.hidden_tag() }}
+    <div class="form-group">
+        {{ form2.otp.label(class="form-control-label") }}
+        {% if form2.otp.errors %}
+            {{ form2.otp(class="form-control form-control-lg is-invalid") }}
+            <div class="invalid-feedback">
+                {% for error in form2.otp.errors %}
+                    <span>{{ error }}</span>
+                {% endfor %}
+            </div>
+        {% else %}
+            {{ form2.otp(class="form-control form-control-lg") }}
+        {% endif %}
+    </div>
+    <div class="form-group">
+        {{ form2.submit(class="btn btn-outline-info") }}
+    </div>
+</form>
+
+
+{% endblock %}

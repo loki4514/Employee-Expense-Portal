@@ -1,9 +1,13 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField,BooleanField,PasswordField,SubmitField,DateField,FloatField,FileField,ValidationError
+from wtforms import StringField,BooleanField,PasswordField,SubmitField
 from wtforms.validators import DataRequired,Length
 
-class ManLoginForm(FlaskForm):
+class ManagerLoginForm(FlaskForm):
     managerid = StringField('Manager ID',validators=[DataRequired(),Length(2,20)])
-    remember = BooleanField('Remember Me')
     password = PasswordField('Password',validators=[DataRequired()])
     submit = SubmitField('Login')
+    
+    
+class StatusForm(FlaskForm):
+    rejected = SubmitField('Reject')
+    accepted = SubmitField('Accept')

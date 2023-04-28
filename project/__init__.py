@@ -6,6 +6,7 @@ from flask_mail import Mail
 # mail server i need
 from project.config import Config
 
+
 # app = Flask(__name__)
 # app.config.from_object(Config)
 # app.config['SECRET_KEY'] = '8e7b334da419398c10724c396620c7c4'
@@ -62,12 +63,13 @@ from project.config import Config
 # login_manager.login_message_category = 'info'
 db = SQLAlchemy()
 bcrypt = Bcrypt()
+
 user_login_manager = LoginManager()
 user_login_manager.login_view = 'admins.login'
 user_login_manager.login_message_category = 'info'
-emp_login_manager = LoginManager()
-emp_login_manager.login_view = 'employees.emp'
-emp_login_manager.login_message_category = 'info'
+# emp_login_manager = LoginManager()
+# emp_login_manager.login_view = 'employees.emp'
+# emp_login_manager.login_message_category = 'info'
 
 
 
@@ -87,23 +89,39 @@ def create_app(config_class=Config):
     mail.init_app(app)
     
     
+
+    # create login managers for admins and employees
+    # user_login_manager = LoginManager()
+    # user_login_manager.login_view = 'admins.login'
+    # user_login_manager.login_message_category = 'info'
+
+    # emp_login_manager = LoginManager()
+    # emp_login_manager.login_view = 'employees.login'
+    # emp_login_manager.login_message_category = 'info'
+
+    # initialize login managers with app
+    user_login_manager.init_app(app)
+    # emp_login_manager.init_app(app)
+
+    # import blueprints
     from project.main.routes import main
     from project.admin.routes import admins
     from project.employee.routes import employees
     from project.manager.routes import managers
     
-    
-    user_login_manager.init_app(app)
-    user_login_manager.login_view = 'admins.login'
-
-    emp_login_manager.init_app(app)
-    emp_login_manager.login_view = 'employees.emp'
-
+    # register blueprints
     app.register_blueprint(main)
     app.register_blueprint(admins)
     app.register_blueprint(employees)
     app.register_blueprint(managers)
-    
+
+    # associate login managers with blueprints
+    user_login_manager.blueprint_login_views = {
+        'admins': 'admins.login'
+    }
+    # emp_login_manager.blueprint_login_views = {
+    #     'employees': 'employees.emp'
+    # }
     
     return app
     
