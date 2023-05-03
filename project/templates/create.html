@@ -1,14 +1,13 @@
+
 {% extends 'index.html' %}
 {% block content %}
 
-<div class="container-fluid">
-    <div class="row justify-content-center">
-        <div class="col-md-6">
-            <div class="card">
-                <div class="card-body text-center">
-            <form method="POST" action="">
+<div class="registration-box"> 
+<div class="container" id="register">
+    
+            <form method="POST" action="" id="form">
                 {{form.hidden_tag()}}
-                <legend class="text-center mb-4">Create Employee's Account</legend>
+                <legend class="text-center" style="white-space: nowrap;">Create Employee's Account</legend>
                 <div class="form-group">
                     {{ form.employeeid.label(class="form-control-label") }}
 
@@ -28,14 +27,14 @@
                     {{ form.name.label(class="form-control-label") }}
 
                     {% if form.name.errors %}
-                        {{ form.name(class="form-control form-control-lg is-invalid") }}
+                        {{ form.name(class="form-control form-control-lg is-invalid",style="width:80%;") }}
                         <div class="invalid-feedback">
                             {% for error in form.username.errors %}
                                 <span>{{ error }}</span>
                             {% endfor %}
                         </div>
                     {% else %}
-                        {{ form.name(class="form-control form-control-lg width:80%") }}
+                        {{ form.name(class="form-control form-control-lg",) }}
                     {% endif %}
                 </div>
 
@@ -122,15 +121,13 @@
 
 
 
-                <div class="form-group">
+                <div class="form-group text-center">
                     {{ form.submit(class="btn btn-outline-info") }}
                 </div>
                 
             </form>
             </div>
         </div>
-        </div>
-    </div>
     </div>
     
     

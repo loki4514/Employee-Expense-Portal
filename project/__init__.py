@@ -116,12 +116,17 @@ def create_app(config_class=Config):
     app.register_blueprint(managers)
 
     # associate login managers with blueprints
-    user_login_manager.blueprint_login_views = {
-        'admins': 'admins.login'
-    }
+    # user_login_manager.blueprint_login_views = {
+    #     'admins': 'admins.login'
+    # }
     # emp_login_manager.blueprint_login_views = {
     #     'employees': 'employees.emp'
     # }
+    # @app.after_request
+    # def add_header(response):
+    #     response.headers['Cache-Control'] = 'no-store'
+    #     return response
+    
     
     return app
-    
+

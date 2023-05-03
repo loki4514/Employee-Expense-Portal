@@ -1,5 +1,20 @@
 {% extends "index.html" %}
 {% block content %}
+<div class="row">
+    <div class="col-md-8 mx-auto text-center">
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          {% for category, message in messages %}
+            <div class="alert alert-{{ category }} text-danger" id="alert-success">
+              {{ message }}
+            </div>
+          {% endfor %}
+        {% endif %}
+      {% endwith %}
+    </div>
+  </div>
+
+
 <div class="container">
     <div class="content-section mx-auto">
         <form method="POST" action="">

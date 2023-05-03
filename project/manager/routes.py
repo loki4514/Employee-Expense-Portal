@@ -27,6 +27,8 @@ def manager_login():
 
 @managers.route("/manager",methods = ['GET','POST'])
 def manager():
+    if 'managerid' not in session:
+        return redirect(url_for('managers.manager_login'))
     expenses = Expense.query.filter_by(managerid=session['managerid'], status='pending').all()
     manager_list = [[str(expense.date),expense.amount,url_for('static', filename='bills/' + expense.image_file),expense.claimid] for expense in expenses]
     form = StatusForm()

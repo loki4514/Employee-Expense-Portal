@@ -51,7 +51,7 @@ class CreateEmployee(FlaskForm):
         
         emp = Employee.query.filter_by(email=email.data).first() 
         if emp:
-            raise ValidationError('Enter a valid email !')
+            raise ValidationError('Email Id Already exist!')
         
     def validate_Managerid(self,managerid):
         

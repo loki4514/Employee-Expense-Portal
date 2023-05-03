@@ -20,6 +20,8 @@ def generate_unique_claimid():
 
 @employees.route("/employee", methods=["GET", "POST"])
 def employee():
+    if 'employeeid' not in session:
+        return redirect(url_for('employees.emp'))
     form = ExpenseForm()
     if form.validate_on_submit():
         # Process the form data
@@ -55,6 +57,8 @@ def emp():
 
 @employees.route('/approve')
 def approve():  # replace with the actual employee ID
+    if 'employeeid' not in session:
+        return redirect(url_for('employees.emp'))
     expenses = Expense.query.filter_by(empid=session["employeeid"]).order_by(Expense.date.desc()).all()
     # print(expenses)
     if expenses:
@@ -69,6 +73,8 @@ def approve():  # replace with the actual employee ID
 
 @employees.route("/rejected",methods=["GET","POST"])
 def rejected():
+    if 'employeeid' not in session:
+        return redirect(url_for('employees.emp'))
     form = UpdateExpenseForm()
     expense = Expense.query.filter_by(empid=session["employeeid"], status="rejected").first()
     if expense and form.validate_on_submit():
@@ -97,7 +103,7 @@ def rejected():
 # route that sends the request of email for reset the password 
 def reset_request():
     if 'employeeid' in session:
-        return redirect(url_for(employees.emp))
+        return redirect(url_for('employees.emp'))
     form = RequestRestForm()
     if form.validate_on_submit():
         emp = Employee.query.filter_by(email=form.email.data).first()
@@ -110,7 +116,7 @@ def reset_request():
 # same route racceots the token as parameter 
 def reset_token(token):
     if 'employeeid' in session:
-        return redirect(url_for(employees.emp))
+        return redirect(url_for('employees.emp'))
     emp = Employee.verify_reset_token_employee(token)
     if emp is None:
         flash('That is an invalid or expired token','warning')

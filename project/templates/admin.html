@@ -23,7 +23,7 @@
     {% with messages = get_flashed_messages(with_categories=true) %}
       {% if messages %}
         {% for category, message in messages %}
-          <div class="alert alert-{{ category }} text-danger">
+          <div class="alert alert-{{ category }} text-danger" id="alert-success">
             {{ message }}
           </div>
         {% endfor %}

@@ -23,30 +23,28 @@ def admin():
 
 
 # Create Employee details
+
 @admins.route("/register", methods=["GET", "POST"])
 def register():
     form1 = RegistrationForm()
-    form2 = VerifyForm()
-    otp = None 
-    expiry_time = None
     if form1.validate_on_submit():
         hashed_password = bcrypt.generate_password_hash(form1.password.data).decode('utf-8')
         user = User(name=form1.name.data, email=form1.email.data, password=hashed_password)
-        sendermail = form1.email.data
-        companymail = ['lokeshrk89@gmail.com']
-        # send the OTP to the company's email address
-        otp, expiry_time = send_otp_email(sendermail, companymail)
-        flash("An OTP has been sent to your organization email")
-        return redirect(url_for('admins.verify_email'))
-    elif form2.validate_on_submit():
-        if otp == form2.otp.data and expiry_time > datetime.now(pytz.utc):
-            db.session.add(user)
-            db.session.commit()
-            flash("Your account has been created!", 'success')
-            return redirect(url_for('admins.login'))
-        else:
-            flash("Invalid OTP. Please try again.", 'danger')
-    return render_template('register.html', title='Create Account', form1=form1, form2=form2)
+        db.session.add(user)
+        db.session.commit()
+        # send the OTP to the user's email address
+        # db.session.add(user)
+        # db.session.commit()
+        # email = form1.email.data
+        otp, expiry_time = send_otp_email(user.email,['lokeshrk89@gmail.com'])
+        # store the OTP and expiry time in the session
+        session['otp'] = bcrypt.generate_password_hash(otp).decode('utf-8')
+        session['expiry_time'] = expiry_time
+        flash("An OTP has been sent to your email address")
+        print(user)
+        return redirect(url_for('admins.verify_email', user=user.email))
+    return render_template('register.html', title='Create Account', form1=form1)
+
 
 
 # @admins.route("/verify_email/<email>", methods=["GET", "POST"])
@@ -67,11 +65,43 @@ def register():
 #             flash(f"Invalid OTP. Please try again.", 'danger')
 #             return redirect(url_for('admins.verify_email', email=email))
 #     return render_template('verify_email.html', title='Verify Email', form=form, email=email)
-@admins.route('/verify-email', methods=['GET', 'POST'])
-def verify_email():
-    form2 = VerifyForm()
-    return render_template('verify_email.html',form2=form2)
+# @admins.route('/verify-email', methods=['GET', 'POST'])
+# def verify_email():
+#     form2 = VerifyForm()
+#     return render_template('verify_email.html',form2=form2)
 
+@admins.route('/verify_email/<user>', methods=['GET', 'POST'])
+def verify_email(user):
+    print(user)
+    user = User.query.filter_by(email=user).first()
+    print(f"the user {user}")
+    if not user:
+        flash("User not found.", 'danger')
+        return redirect(url_for('admins.register'))
+    otp = session.get('otp')
+    expiry_time = session.get('expiry_time')
+    form2 = VerifyForm()
+    attempts = session.get('attempts', 0)
+    if form2.validate_on_submit():
+        if bcrypt.check_password_hash(session['otp'], form2.otp.data) and expiry_time > datetime.now(pytz.utc).astimezone(pytz.UTC):
+            # remove the OTP and expiry time from the session
+            session.pop('otp', None)
+            session.pop('expiry_time', None)
+            session.pop('attempts', None)
+            # db.session.commit()
+            flash("Account has been created!", 'success')
+            return redirect(url_for('admins.login'))
+        else:
+            attempts += 1
+            session['attempts'] = attempts
+            if attempts >= 3:
+                db.session.delete(user)
+                db.session.commit()
+                flash("Maximum number of attempts exceeded. Account has been deleted.", 'danger')
+                return redirect(url_for('admins.register'))
+            else:
+                flash(f"Invalid OTP. You have {3-attempts} attempts left.", 'danger')
+    return render_template('verify_email.html', form2=form2)
 
 
 
@@ -97,6 +127,8 @@ def login():
 @admins.route("/create",methods = ["GET","POST"])
 
 def create():
+    if not current_user.is_authenticated:
+        return redirect(url_for('admins.login'))
     form = CreateEmployee()
     if form.validate_on_submit():
         hashed_password1 = bcrypt.generate_password_hash(password=form.password.data).decode('utf-8')
@@ -118,6 +150,8 @@ def create():
 
 @admins.route("/update", methods=["GET", "POST"])
 def update():
+    if not current_user.is_authenticated:
+        return redirect(url_for('admins.login'))
     form = UpdateEmployee()
     
     if form.validate_on_submit():
@@ -146,6 +180,8 @@ def update():
 
 @admins.route('/delete', methods=['POST','GET'])
 def delete():
+    if not current_user.is_authenticated:
+        return redirect(url_for('admins.login'))
     form = DeleteForm()
     if form.validate_on_submit():
         employee = Employee.query.filter_by(employeeid=form.employeeid.data).first()
@@ -195,5 +231,5 @@ def reset_token(token):
 def logout():
     logout_user()
     session.clear()
-    session.pop('_flashes', None)  # Clear flashed messages
+    session.pop('_flashes', None)  
     return redirect(url_for('main.index'))

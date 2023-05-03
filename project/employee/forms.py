@@ -14,7 +14,7 @@ class EmpLoginForm(FlaskForm):
 class ExpenseForm(FlaskForm):
     date = DateField('Date', validators=[DataRequired()])
     amount = FloatField('Amount', validators=[DataRequired()])
-    image_file = FileField('Picture', validators=[FileRequired(), FileAllowed(['jpg', 'jpeg', 'png', 'gif'], 'Images only!')])
+    image_file = FileField('Picture', validators=[FileRequired(), FileAllowed(['jpg', 'jpeg', 'png', 'gif','pdf'], 'Images or pdfs only!')])
     submit = SubmitField('Submit')
     
     
@@ -28,7 +28,7 @@ class ExpenseForm(FlaskForm):
 class UpdateExpenseForm(FlaskForm):
     date = DateField('Date')
     amount = FloatField('Amount')
-    image_file = FileField('Picture', validators=[ FileAllowed(['jpg', 'jpeg', 'png', 'gif'], 'Images only!')])
+    image_file = FileField('Picture', validators=[ FileAllowed(['jpg', 'jpeg', 'png', 'gif','pdf'], 'Images or pdf only!')])
     submit = SubmitField('Submit')
     
     

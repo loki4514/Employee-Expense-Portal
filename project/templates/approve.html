@@ -1,75 +1,73 @@
 {% extends 'index.html' %}
 {% block content%}
 
-<nav  class="navbar navbar-expand-lg navbar-light bg-light blue">
-    <div class="container-fluid">
-      <a class="navbar-brand" href="#">Hello {{session['name']}}</a>
+<nav class="navbar navbar-expand-md navbar-light bg-light">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">Hello {{session['name']}}</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item">
+          <a href="{{url_for('employees.employee')}}" class="nav-link" style="color: black;">Home</a>
+        </li>
+        <li class="nav-item">
+          <a href="{{url_for('employees.logout')}}" class="nav-link" style="color: black;">Log out</a>
+        </li>
+      </ul>
     </div>
-    <div class="container-fluid">
-      <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
-        <ul class="navbar-nav">
-          <li class="nav-item">
-            <a href="{{url_for('employees.employee')}}" class="nav-link a1" style="color: black;">Home</a>
-          </li>
-          <li class="nav-item">
-            <a href="{{url_for('employees.logout')}}" class="nav-link a1" style="color: black;">Log out</a>
-          </li>
-          
-        </ul>
-      </div>
-    </div>
-  </nav>
+  </div>
+</nav>
 
 
-  <div class="row">
+
+ 
     <div class="col-md-8 mx-auto text-center">
       {% with messages = get_flashed_messages(with_categories=true) %}
         {% if messages %}
           {% for category, message in messages %}
-            <div class="alert alert-{{ category }} text-danger">
+            <div class="alert alert-{{ category }} text-danger" id="alert-success">
               {{ message }}
             </div>
           {% endfor %}
         {% endif %}
       {% endwith %}
     </div>
-  </div>
 
-  <div class="container-fluid mt-5 mx-auto">
-    <div class="row">
-      <div class="col-sm-12 col-md-12 col-lg-12 text-center" style="background-color: #ECF2FF; padding: 10px;">
-        <table>
-          <thead>
-            <tr>
-              <th>Date of the bill</th>
-              <th>Amount to be claimed</th>
-              <th>Status</th>
-            </tr>
-          </thead>
-          <tbody>
-            {% for status in status_list %}
-            <tr>
-              <td data-label="Date of the bill">{{ status[0] }}</td>
-              <td data-label="Amount to be claimed">{{ status[1] }}</td>
-              <td data-label="Status">
-                {% if status[2] == 'rejected' %}
-                  <p class="text-center " >Rejected.</p>
-                  <a href="{{ url_for('employees.rejected') }}" class="btn btn-primary">Back to Home</a>
-                {% elif status[2] == 'accepted' %}
-                  <p class="text-center" style = "color : green">Approved</p>
-                {% else %}
-                  <p class="text-center " style = "color : blue">Pending</p>
-                {% endif %}
-              </td>
-            </tr>
-            {% endfor %}
-          </tbody>
-        </table>
-      </div>
+
+  <div class="container-fluid mx-auto">
+  <div class="row">
+    <div class="col-sm-12 col-md-12 col-lg-12 text-center" style="background-color: #ECF2FF; padding: 10px;">
+      <table>
+        <thead>
+          <tr>
+            <th>Date of the bill</th>
+            <th>Amount to be claimed</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for status in status_list %}
+          <tr>
+            <td data-label="Date of the bill">{{ status[0] }}</td>
+            <td data-label="Amount to be claimed">{{ status[1] }}</td>
+            <td data-label="Status">
+              {% if status[2] == 'rejected' %}
+                <p class="text-center" style = "color : red">Rejected.</p>
+                <a href="{{ url_for('employees.rejected') }}" class="btn btn-outline-info">Update</a>
+              {% elif status[2] == 'accepted' %}
+                <p class="text-center" style = "color : green">Approved</p>
+              {% else %}
+                <p class="text-center " style = "color : blue">Pending</p>
+              {% endif %}
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
     </div>
   </div>
-
-
-
+</div>
 
 {% endblock %}

@@ -1,65 +1,64 @@
 {% extends "index.html" %}
 {% block content %}
 
-<div class="row">
-    <div class="col-md-8 mx-auto text-center">
-      {% with messages = get_flashed_messages(with_categories=true) %}
-        {% if messages %}
-          {% for category, message in messages %}
-            <div class="alert alert-{{ category }} text-danger">
-              {{ message }}
-            </div>
-          {% endfor %}
-        {% endif %}
-      {% endwith %}
-    </div>
-  </div>
-  
 
-<div class = "container">
-    <div class="content-section mx-auto">
-        <form method="POST" action="">
+    <div class="col-md-8 mx-auto text-center">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+            <div class="alert alert-{{ category }} text-danger" id="alert-success">
+                {{ message }}
+            </div>
+            {% endfor %}
+        {% endif %}
+        {% endwith %}
+    </div>
+
+
+<div class="container d-flex justify-content-center align-items-center mt-4" style="min-height: 100%;">
+    <div class="card text-dark bg-light p-4 col-md-6" style="max-width: 30rem;">
+        <div class="card-body">
+        <form method="POST" action="" class="form">
             {{ form.hidden_tag() }}
             <fieldset class="form-group">
-                <legend class="border-bottom mb-4">Log In</legend>
-                <div class="form-group">
-                    {{ form.employeeid.label(class="form-control-label") }}
-                    {% if form.employeeid.errors %}
-                        {{ form.employeeid(class="form-control form-control-lg is-invalid") }}
-                        <div class="invalid-feedback">
-                            {% for error in form.employeeid.errors %}
-                                <span>{{ error }}</span>
-                            {% endfor %}
-                        </div>
-                    {% else %}
-                        {{ form.employeeid(class="form-control form-control-lg") }}
-                    {% endif %}
+            <legend class="border-bottom mb-4">Employee Login</legend>
+            <div class="form-group">
+                {{ form.employeeid.label(class="form-control-label") }}
+                {% if form.employeeid.errors %}
+                {{ form.employeeid(class="form-control form-control-lg is-invalid") }}
+                <div class="invalid-feedback">
+                {% for error in form.employeeid.errors %}
+                <span>{{ error }}</span>
+                {% endfor %}
                 </div>
-                <div class="form-group">
-                    {{ form.password.label(class="form-control-label") }}
-                    {% if form.password.errors %}
-                        {{ form.password(class="form-control form-control-lg is-invalid") }}
-                        <div class="invalid-feedback">
-                            {% for error in form.password.errors %}
-                                <span>{{ error }}</span>
-                            {% endfor %}
-                        </div>
-                    {% else %}
-                        {{ form.password(class="form-control form-control-lg") }}
-                    {% endif %}
+                {% else %}
+                {{ form.employeeid(class="form-control form-control-lg") }}
+                {% endif %}
+            </div>
+            <div class="form-group">
+                {{ form.password.label(class="form-control-label") }}
+                {% if form.password.errors %}
+                {{ form.password(class="form-control form-control-lg is-invalid") }}
+                <div class="invalid-feedback">
+                {% for error in form.password.errors %}
+                <span>{{ error }}</span>
+                {% endfor %}
                 </div>
-                <div class="form-check">
-                    {{ form.remember(class="form-check-input") }}
-                    {{ form.remember.label(class="form-check-label") }}
-                </div>
+                {% else %}
+                {{ form.password(class="form-control form-control-lg") }}
+                {% endif %}
+            </div>
+
             </fieldset>
             <div class="form-group">
-                {{ form.submit(class="btn btn-outline-info") }}
+            {{ form.submit(class="btn btn-outline-info") }}
             </div>
-            <small class="text-muted ml-2">
-                <a href={{url_for('employees.reset_request')}}>Forgot Password?</a>
-            </small>
         </form>
+        <small class="text-muted ml-2">
+            <a href="{{ url_for('employees.reset_request') }}">Forgot Password?</a>
+        </small>
+        </div>
     </div>
-</div>
+    </div>
+
 {% endblock content %}

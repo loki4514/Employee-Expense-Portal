@@ -45,9 +45,7 @@ def send_otp_email(sendermail, companymail):
     
     msg = Message(subject='Your OTP for account registration', sender=sendermail, recipients=companymail)
     msg.body = f'''
-    An account creation request has been raised by one of your HR
-    Provide them this OTP: {otp_code}, or else simply ignore this mail.
-    Note: This OTP is valid for 5 minutes only.
+    An account creation request has been raised by one of your HR Provide them this OTP: {otp_code}, or else simply ignore this mail.Note: This OTP is valid for 5 minutes only.
     '''
     
     mail.send(msg)

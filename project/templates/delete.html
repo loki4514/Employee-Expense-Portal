@@ -22,7 +22,7 @@
       {% with messages = get_flashed_messages(with_categories=true) %}
         {% if messages %}
           {% for category, message in messages %}
-            <div class="alert alert-{{ category }} text-danger">
+            <div class="alert alert-{{ category }} text-danger" id="alert-success">
               {{ message }}
             </div>
           {% endfor %}
@@ -32,8 +32,8 @@
   </div>
 
 
-<div class="container">
-  <form method="POST" action="">
+<div class="container" id="register">
+  <form method="POST" action="" id="form">
     {{form.hidden_tag()}}
     <legend class="text-center mb-4">Delete Employee</legend>
     <div class="form-group">
@@ -51,7 +51,7 @@
         {% endif %}
     </div>
 
-    <div class = "form-group">
+    <div class = "form-group text-center">
       {{ form.submit(class="btn btn-outline-info") }}
     </div>
       

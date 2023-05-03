@@ -50,12 +50,12 @@ button:hover {
   border-radius: 3px;
 }
 
-form {
-  width : 300px;
+#form {
+  width : 500px;
 
 }
 form label{
-  display: flex;
+  text-align: center;
 }
 
 .navbar {
@@ -119,4 +119,27 @@ th, td {
 th {
   background-color: #6c757d;
   color: #fff;
+}
+
+.form-control {
+  width: 100%;
+}
+#register {
+  background-color: #D4FAFC;
+  border-radius: 20px;
+  padding: 30px;
+}
+
+
+#alert-success {
+  animation: fadeOut 10s forwards;
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
 }

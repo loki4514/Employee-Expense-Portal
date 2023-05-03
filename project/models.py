@@ -22,6 +22,7 @@ class User(db.Model,UserMixin):
     name = db.Column(db.String(20),nullable=False)
     email = db.Column(db.String(20),unique=True,nullable=False)
     password = db.Column(db.String(60),nullable=False)
+    # flag = db.Column(db.Boolean, default=False, nullable=False)
     # image_file = db.Column(db.string(20),unique=True,nullable=False)
     
     # here serilaize the secret key which is valid for 30 minutes and many more
