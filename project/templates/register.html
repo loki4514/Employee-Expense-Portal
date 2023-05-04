@@ -15,17 +15,15 @@
   </div>
 
 
-<div class="container">
+  <div class="container">
     <div class="content-section mx-auto">
         <form method="POST" action="">
             {{ form1.hidden_tag() }}
             <fieldset class="form-group">
-                <legend class="border-bottom mb-4">Create Account</legend>
-                <div class="form-group">
-                    
-                <div class="form-group">
-                    {{ form1.name.label(class="form-control-label") }}
-
+                <legend class="border-bottom mb-4 text-center">Create Account</legend>
+              
+                <div class="form-group mb-3">
+                    {{ form1.name.label(class="form-control-label text-center") }}
                     {% if form1.name.errors %}
                         {{ form1.name(class="form-control form-control-lg is-invalid") }}
                         <div class="invalid-feedback">
@@ -37,9 +35,8 @@
                         {{ form1.name(class="form-control form-control-lg") }}
                     {% endif %}
                 </div>
-
-                <div class="form-group">
-                    {{ form1.email.label(class="form-control-label") }}
+                <div class="form-group mb-3">
+                    {{ form1.email.label(class="form-control-label text-center") }}
                     {% if form1.email.errors %}
                         {{ form1.email(class="form-control form-control-lg is-invalid") }}
                         <div class="invalid-feedback">
@@ -51,8 +48,8 @@
                         {{ form1.email(class="form-control form-control-lg") }}
                     {% endif %}
                 </div>
-                <div class="form-group">
-                    {{ form1.password.label(class="form-control-label") }}
+                <div class="form-group mb-3">
+                    {{ form1.password.label(class="form-control-label text-center") }}
                     {% if form1.password.errors %}
                         {{ form1.password(class="form-control form-control-lg is-invalid") }}
                         <div class="invalid-feedback">
@@ -64,8 +61,8 @@
                         {{ form1.password(class="form-control form-control-lg") }}
                     {% endif %}
                 </div>
-                <div class="form1-group">
-                    {{ form1.confirm_password.label(class="form-control-label") }}
+                <div class="form1-group mb-3">
+                    {{ form1.confirm_password.label(class="form-control-label text-center") }}
                     {% if form1.confirm_password.errors %}
                         {{ form1.confirm_password(class="form-control form-control-lg is-invalid") }}
                         <div class="invalid-feedback">
@@ -78,17 +75,16 @@
                     {% endif %}
                 </div>
             </fieldset>
-            <div class="form-group">
+            <div class="form-group text-center mb-3">
                 {{ form1.submit(class="btn btn-outline-info") }}
             </div>
-            
-
         </form>
-    
-    <div class="border-top pt-3">
+    <div class="border-top text-center pt-3">
         <small class="text-muted">
-            Already Have An Account? <a class="ml-2" href="{{ url_for('admins.login') }}">Sign In</a>
+    Already Have An Account? <a class="ml-2" href="{{ url_for('admins.login') }}" style="text-decoration:None;">Sign In</a>
         </small>
     </div>
 </div>
+
+
 {% endblock content %}

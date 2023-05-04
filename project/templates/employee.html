@@ -21,8 +21,8 @@
       </div>
     </div>
   </nav>
- 
-  <div class="row">
+
+
     <div class="col-md-8 mx-auto text-center">
       {% with messages = get_flashed_messages(with_categories=true) %}
         {% if messages %}
@@ -34,57 +34,60 @@
         {% endif %}
       {% endwith %}
     </div>
+
+<br>
+<br>
+ <div class="container">
+  <div class="content-section mx-auto">
+    <form method="POST" action="" enctype="multipart/form-data">
+      {{ form.hidden_tag() }}
+
+      <div class="form-group mb-4">
+        {{ form.date.label(class="form-control-label") }}
+        {% if form.date.errors %}
+        {{ form.date(class="form-control form-control-lg is-invalid") }}
+        <div class="invalid-feedback">
+          {% for error in form.date.errors %}
+          <span>{{ error }}</span>
+          {% endfor %}
+        </div>
+        {% else %}
+        {{ form.date(class="form-control form-control-lg") }}
+        {% endif %}
+      </div>
+
+      <div class="form-group mb-4">
+        {{ form.amount.label(class="form-control-label") }}
+        {% if form.amount.errors %}
+        {{ form.amount(class="form-control form-control-lg is-invalid") }}
+        <div class="invalid-feedback">
+          {% for error in form.amount.errors %}
+          <span>{{ error }}</span>
+          {% endfor %}
+        </div>
+        {% else %}
+        {{ form.amount(class="form-control form-control-lg") }}
+        {% endif %}
+      </div>
+
+      <div class="form-group mb-4">
+        {{ form.image_file.label() }}
+        {{ form.image_file(class="form-control-file") }}
+        {% if form.image_file.errors %}
+        {% for error in form.image_file.errors %}
+        <span class="text-danger">{{ error }}</span>
+        {% endfor %}
+        {% else %}
+        {% endif %}
+      </div>
+
+      <div class="form-group text-center">
+        {{ form.submit(class="btn btn-outline-info") }}
+      </div>
+    </form>
   </div>
-  <div class="container">
-    <div class="content-section mx-auto">
-      <form method="POST" action=""  enctype="multipart/form-data">
-        {{ form.hidden_tag() }}
-        
-        <div class="form-group">
-          {{ form.date.label(class="form-control-label") }}
-          {% if form.date.errors %}
-            {{ form.date(class="form-control form-control-lg is-invalid") }}
-            <div class="invalid-feedback">
-              {% for error in form.date.errors %}
-                <span>{{ error }}</span>
-              {% endfor %}
-            </div>
-          {% else %}
-            {{ form.date(class="form-control form-control-lg") }}
-          {% endif %}
-        </div>
-        
-        <div class="form-group">
-          {{ form.amount.label(class="form-control-label") }}
-          {% if form.amount.errors %}
-            {{ form.amount(class="form-control form-control-lg is-invalid") }}
-            <div class="invalid-feedback">
-              {% for error in form.amount.errors %}
-                <span>{{ error }}</span>
-              {% endfor %}
-            </div>
-          {% else %}
-            {{ form.amount(class="form-control form-control-lg") }}
-          {% endif %}
-        </div>
-        
-        <div class="form-group">
-          {{ form.image_file.label() }}
-          {{ form.image_file(class="form-control-file") }}
-          {% if form.image_file.errors %}
-              {% for error in form.image_file.errors %}
-                <span class = "text-danger">{{ error }}</span>
-              {% endfor %}
-          {% else %}
-          {% endif %}
-        </div>
-        
-        <div class="form-group">
-          {{ form.submit(class="btn btn-outline-info") }}
-        </div>
-      </form>
-    </div>
-  </div>
+</div>
+
   
 
 {% endblock %}

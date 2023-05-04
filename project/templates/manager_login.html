@@ -15,53 +15,51 @@
   </div>
   
 <br>
-  <div class="container d-flex justify-content-center align-items-center" style="min-height: 100%;">
-    <div class="card text-dark bg-light p-4 col-md-6" style="max-width: 30rem;">
-      <div class="card-body">
-        <form method="POST" action="">
-          {{ form.hidden_tag() }}
-          <fieldset class="form-group">
-            <legend class="border-bottom mb-4 text-center">Manager Login</legend>
-            <div class="form-group">
-              {{ form.managerid.label(class="form-control-label") }}
-              {% if form.managerid.errors %}
-                {{ form.managerid(class="form-control form-control-lg is-invalid") }}
-                <div class="invalid-feedback">
-                  {% for error in form.managerid.errors %}
-                    <span>{{ error }}</span>
-                  {% endfor %}
-                </div>
-              {% else %}
-                {{ form.managerid(class="form-control form-control-lg") }}
-              {% endif %}
-            </div>
-            <div class="form-group">
-              {{ form.password.label(class="form-control-label") }}
-              {% if form.password.errors %}
-                {{ form.password(class="form-control form-control-lg is-invalid") }}
-                <div class="invalid-feedback">
-                  {% for error in form.password.errors %}
-                    <span>{{ error }}</span>
-                  {% endfor %}
-                </div>
-              {% else %}
-                {{ form.password(class="form-control form-control-lg") }}
-              {% endif %}
-            </div>
-          </fieldset>
-          <div class="form-group text-center">
-            {{ form.submit(class="btn btn-info") }}
+<div class="container d-flex justify-content-center align-items-center" style="min-height: 100%;">
+  <div class="card text-dark bg-light p-4 col-md-6" style="max-width: 25rem;">
+    <div class="card-body">
+      <form method="POST" action="">
+        {{ form.hidden_tag() }}
+        <fieldset class="form-group">
+          <legend class="border-bottom mb-4 text-center">Manager Login</legend>
+          <div class="form-group mb-4">
+            {{ form.managerid.label(class="form-control-label") }}
+            {% if form.managerid.errors %}
+              {{ form.managerid(class="form-control form-control-lg is-invalid") }}
+              <div class="invalid-feedback">
+                {% for error in form.managerid.errors %}
+                  <span>{{ error }}</span>
+                {% endfor %}
+              </div>
+            {% else %}
+              {{ form.managerid(class="form-control form-control-lg") }}
+            {% endif %}
           </div>
-        </form>
-        <div class="text-center">
-            <small class="text-muted">
-                <a href="#" style="text-decoration: none; color: #7B7B7B;">Visit Employee Portal to reset password.</a>
-            </small>
+          <div class="form-group mb-4">
+            {{ form.password.label(class="form-control-label") }}
+            {% if form.password.errors %}
+              {{ form.password(class="form-control form-control-lg is-invalid") }}
+              <div class="invalid-feedback">
+                {% for error in form.password.errors %}
+                  <span>{{ error }}</span>
+                {% endfor %}
+              </div>
+            {% else %}
+              {{ form.password(class="form-control form-control-lg") }}
+            {% endif %}
+          </div>
+        </fieldset>
+        <div class="form-group text-center">
+          {{ form.submit(class="btn btn-info") }}
         </div>
-        
+      </form>
+      <div class="text-center">
+        <small class="text-muted">
+          <a href="#" style="text-decoration: none; color: #7B7B7B;">Visit Employee Portal to reset password.</a>
+        </small>
       </div>
     </div>
   </div>
-  
+</div>
 
 {% endblock %}

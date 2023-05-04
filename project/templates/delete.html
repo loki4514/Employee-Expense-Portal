@@ -31,12 +31,12 @@
     </div>
   </div>
 
-
+<br>
 <div class="container" id="register">
   <form method="POST" action="" id="form">
     {{form.hidden_tag()}}
     <legend class="text-center mb-4">Delete Employee</legend>
-    <div class="form-group">
+    <div class="form-group mb-2">
         {{ form.employeeid.label(class="form-control-label") }}
 
         {% if form.employeeid.errors %}
@@ -55,8 +55,6 @@
       {{ form.submit(class="btn btn-outline-info") }}
     </div>
       
-
-
   </form>
 </div>
 

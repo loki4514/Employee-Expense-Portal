@@ -108,12 +108,14 @@ def create_app(config_class=Config):
     from project.admin.routes import admins
     from project.employee.routes import employees
     from project.manager.routes import managers
+    from project.errors.handlers import errors
     
     # register blueprints
     app.register_blueprint(main)
     app.register_blueprint(admins)
     app.register_blueprint(employees)
     app.register_blueprint(managers)
+    app.register_blueprint(errors)
 
     # associate login managers with blueprints
     # user_login_manager.blueprint_login_views = {

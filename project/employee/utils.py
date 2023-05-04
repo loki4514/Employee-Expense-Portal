@@ -45,4 +45,46 @@ def send_reset_email(employee):
     '''
     mail.send(msg)
     
+def send_claimid_mail_emp(employee,expense):
+    msg = Message('Mail Regarding Expense Request',
+                sender='noreply@demo.com',
+                recipients=[employee.email])
     
+    msg.body = f'''
+
+Dear {employee.name},
+
+This is to inform you that your expense request has been successfully submitted. Please note that it is currently pending approval from the Manager.
+
+Your claim ID is {expense.claimid}, and the conveyance amount requested is {expense.amount}. Kindly note that the approval process may take up to few working days.
+
+Thank you for your cooperation.
+
+'''
+    mail.send(msg)
+
+def send_claimid_mail_manager(employee,expense):
+    msg = msg = Message('Mail Regarding Expense Request',
+                sender='noreply@demo.com',
+                recipients=['lokeshrk0089@gmail.com']      ) #{employee.manager_mail}
+    
+
+    msg.body = f'''
+Subject: Approval Needed for Employee Expense Request
+
+Hey {employee.man_name},
+
+Just wanted to give you a heads up that an employee has submitted an expense request that needs your approval. Here are the details:
+
+Claim ID: {expense.claimid}
+Date: {expense.date}
+Amount: {expense.amount}
+
+Can you please approve the request on the company website at your earliest convenience? Thanks a bunch!
+
+
+Cheers,
+Lara Capital Management   
+'''
+    mail.send(msg)
+

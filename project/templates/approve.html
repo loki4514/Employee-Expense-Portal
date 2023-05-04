@@ -36,7 +36,7 @@
     </div>
 
 
-  <div class="container-fluid mx-auto">
+<div class="container-fluid mx-auto" style="position: relative;">
   <div class="row">
     <div class="col-sm-12 col-md-12 col-lg-12 text-center" style="background-color: #ECF2FF; padding: 10px;">
       <table>
@@ -49,25 +49,54 @@
         </thead>
         <tbody>
           {% for status in status_list %}
-          <tr>
-            <td data-label="Date of the bill">{{ status[0] }}</td>
-            <td data-label="Amount to be claimed">{{ status[1] }}</td>
-            <td data-label="Status">
-              {% if status[2] == 'rejected' %}
-                <p class="text-center" style = "color : red">Rejected.</p>
-                <a href="{{ url_for('employees.rejected') }}" class="btn btn-outline-info">Update</a>
-              {% elif status[2] == 'accepted' %}
-                <p class="text-center" style = "color : green">Approved</p>
-              {% else %}
-                <p class="text-center " style = "color : blue">Pending</p>
-              {% endif %}
-            </td>
-          </tr>
+              <tr>
+                <td data-label="Date of the bill">{{ status[0] }}</td>
+                <td data-label="Amount to be claimed">{{ status[1] }}</td>
+                <td data-label="Status">
+                  {% if status[2] == 'pending' %}
+                    <p class="text-center" style="color: blue;">Pending</p>
+                  {% elif status[2] == 'rejected' %}
+                    <p class="text-center" style="color: red;">Rejected</p>
+                    <a href="{{ url_for('employees.rejected') }}" class="btn btn-outline-info">Update</a>
+                  {% elif status[2] == 'accepted' %}
+                    <p class="text-center" style="color: green;">Approved</p>
+                  {% endif %}
+                </td>
+              </tr >
+
           {% endfor %}
         </tbody>
       </table>
+    
     </div>
+    <br>
   </div>
 </div>
+<br>
+<div class="pagination justify-content-center">
+  {% if expenses.has_prev %}
+    <a class="btn btn-outline-info mb-4  mx-1" href="{{ url_for('employees.approve', page=expenses.prev_num) }}" >&laquo;</a>
+  {% else %}
+    <a class="btn btn-outline-info mb-4 disabled  mx-1">&laquo;</a>
+  {% endif %}
+  {% for page in expenses.iter_pages() %}
+    {% if page %}
+      {% if page == expenses.page %}
+        <a class="btn btn-outline-info mb-4 active mx-1">{{ page }}</a>
+      {% else %}
+        <a class="btn btn-outline-info mb-4  mx-1" href="{{ url_for('employees.approve', page=page) }}">{{ page }}</a>
+      {% endif %}
+    {% else %}
+      <span class="btn btn-outline-info mb-4 disabled mx-1">...</span>
+    {% endif %}
+  {% endfor %}
+  {% if expenses.has_next %}
+    <a class="btn btn-outline-info mb-4 mx-1" href="{{ url_for('employees.approve', page=expenses.next_num) }}">&raquo;</a>
+  {% else %}
+    <a class="btn btn-outline-info mb-4 disabled mx-1">&raquo;</a>
+  {% endif %}
+</div>
+
+
 
 {% endblock %}

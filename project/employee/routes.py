@@ -3,7 +3,7 @@ from project import db,bcrypt
 from project.models import Employee
 from project.employee.forms import EmpLoginForm,ExpenseForm,UpdateExpenseForm,RequestRestForm,ResetPasswordForm
 from project.models import Expense
-from project.employee.utils import save_picture,send_reset_email
+from project.employee.utils import save_picture,send_reset_email,send_claimid_mail_emp,send_claimid_mail_manager
 import random
 
 employees = Blueprint('employees',__name__)
@@ -35,8 +35,12 @@ def employee():
         db.session.add(expense)
         db.session.commit()
         
-        flash('Expense has been updated successfully!', 'success')
+        flash('Expense has sent successfully!', 'success')
+        employee = Employee.query.filter_by(employeeid = session['employeeid']).first()
+        send_claimid_mail_emp(employee,expense)
+        send_claimid_mail_manager(employee,expense)
         return redirect(url_for('employees.approve'))
+    
     return render_template('employee.html', form=form)
 
 @employees.route("/emp",methods=["GET","POST"])
@@ -59,7 +63,8 @@ def emp():
 def approve():  # replace with the actual employee ID
     if 'employeeid' not in session:
         return redirect(url_for('employees.emp'))
-    expenses = Expense.query.filter_by(empid=session["employeeid"]).order_by(Expense.date.desc()).all()
+    page = request.args.get('page',1,type=int)
+    expenses = Expense.query.filter_by(empid=session["employeeid"]).order_by(Expense.status.desc()).paginate(page=page, per_page=10)
     # print(expenses)
     if expenses:
         status_list = [[str(expense.date),expense.amount,expense.status] for expense in expenses]
@@ -69,7 +74,7 @@ def approve():  # replace with the actual employee ID
     else: 
         flash("Not yet sent any requests for expense claims")
         return redirect(url_for('employees.employee'))
-    return render_template('approve.html',status_list=status_list)
+    return render_template('approve.html',status_list=status_list,expenses=expenses)
 
 @employees.route("/rejected",methods=["GET","POST"])
 def rejected():

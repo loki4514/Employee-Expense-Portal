@@ -4,7 +4,7 @@
     <div class="content-section mx-auto">
         <form method="POST" action="">
             {{ form.hidden_tag() }}
-                <div class="form-group">
+                <div class="form-group mb-3">
                     {{ form.password.label(class="form-control-label") }}
                     {% if form.password.errors %}
                         {{ form.password(class="form-control form-control-lg is-invalid") }}
@@ -17,7 +17,7 @@
                         {{ form.password(class="form-control form-control-lg") }}
                     {% endif %}
                 </div>
-                <div class="form-group">
+                <div class="form-group mb-3">
                     {{ form.confirm_password.label(class="form-control-label") }}
                     {% if form.confirm_password.errors %}
                         {{ form.confirm_password(class="form-control form-control-lg is-invalid") }}
@@ -30,7 +30,7 @@
                         {{ form.confirm_password(class="form-control form-control-lg") }}
                     {% endif %}
                 </div>
-            <div class="form-group">
+            <div class="form-group text-center">
                 {{ form.submit(class="btn btn-outline-info") }}
             </div>
             

@@ -16,7 +16,6 @@
   </div>
 </nav>
 
-  <div class="row">
     <div class="col-md-8 mx-auto text-center">
       {% with messages = get_flashed_messages(with_categories=true) %}
         {% if messages %}
@@ -28,7 +27,7 @@
         {% endif %}
       {% endwith %}
     </div>
-  </div>
+
 
   <div class="container-fluid mt-5 mx-auto">
     <div class="row">
@@ -83,7 +82,31 @@
     </div>
   </div>
 
-  
+
+<br>
+  <div class="pagination justify-content-center" >
+    {% if expenses.has_prev %}
+      <a class="btn btn-outline-info mb-4  mx-1" href="{{ url_for('employees.approve', page=expenses.prev_num) }}" >&laquo;</a>
+    {% else %}
+      <a class="btn btn-outline-info mb-4 disabled  mx-1">&laquo;</a>
+    {% endif %}
+    {% for page in expenses.iter_pages() %}
+      {% if page %}
+        {% if page == expenses.page %}
+          <a class="btn btn-outline-info mb-4 active mx-1">{{ page }}</a>
+        {% else %}
+          <a class="btn btn-outline-info mb-4  mx-1" href="{{ url_for('employees.approve', page=page) }}">{{ page }}</a>
+        {% endif %}
+      {% else %}
+        <span class="btn btn-outline-info mb-4 disabled mx-1">...</span>
+      {% endif %}
+    {% endfor %}
+    {% if expenses.has_next %}
+      <a class="btn btn-outline-info mb-4 mx-1" href="{{ url_for('employees.approve', page=expenses.next_num) }}">&raquo;</a>
+    {% else %}
+      <a class="btn btn-outline-info mb-4 disabled mx-1">&raquo;</a>
+    {% endif %}
+  </div>
 
 {% endblock %}
         
