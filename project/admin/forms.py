@@ -9,7 +9,6 @@ class RegistrationForm(FlaskForm):
     email = EmailField('Admin Email',validators=[DataRequired(),Email()])
     password = PasswordField('Password',validators=[DataRequired()])
     confirm_password = PasswordField('Confirm password',validators=[DataRequired(),EqualTo('password')])
-    
     submit = SubmitField('Create Employee')
     
 
@@ -32,11 +31,12 @@ class CreateEmployee(FlaskForm):
     employeeid = StringField('Employee Id',validators=[DataRequired(),Length(2,10)])
     name = StringField('Employee Name',validators=[DataRequired(),Length(2,20)])
     email = EmailField('Employee Email',validators=[DataRequired(),Length(2,30)])
-    password = PasswordField('Employee Password',validators=[DataRequired()])
+    password = PasswordField('Employee Password',validators=[DataRequired(),Length(8,20)])
     confirm_password = PasswordField('Confirm Password',validators=[DataRequired(),EqualTo('password')])
     role = RadioField('Employee Type', choices=[('employee', 'Employee'), ('manager', 'Manager')], validators=[DataRequired()])
-    man_name = StringField('Manager Name',validators=[DataRequired(),Length(2,20)])
-    managerid = StringField("Manager Id",validators=[DataRequired(),Length(2,20)])
+    man_name = StringField('Manager Name',validators=[Length(2,20)])
+    managerid = StringField("Manager Id",validators=[Length(2,20)])
+    manager_email = EmailField('Manager Email',validators=[Length(2,30)])
     submit = SubmitField('Create Account')
     
     def validate_employeeid(self,employeeid):
@@ -67,6 +67,7 @@ class UpdateEmployee(FlaskForm):
     role = RadioField('Employee Type', choices=[('employee', 'Employee'), ('manager', 'Manager')], validators=[DataRequired()])
     man_name = StringField('Manager Name')
     managerid = StringField("Manager Id")
+    manager_email = EmailField('Manager Email')
     submit = SubmitField('Update Employee/Manager')
     
     # def validate_employeeid(self, employeeid):

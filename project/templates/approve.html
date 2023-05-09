@@ -45,6 +45,7 @@
             <th>Date of the bill</th>
             <th>Amount to be claimed</th>
             <th>Status</th>
+            <th>Reason</th>
           </tr>
         </thead>
         <tbody>
@@ -62,6 +63,8 @@
                     <p class="text-center" style="color: green;">Approved</p>
                   {% endif %}
                 </td>
+                <td data-label="Reason">{{status[3]}}</td>
+
               </tr >
 
           {% endfor %}

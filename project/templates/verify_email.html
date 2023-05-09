@@ -1,6 +1,6 @@
 {% extends 'index.html' %}
 {% block content %}
-<div class="row">
+
     <div class="col-md-8 mx-auto text-center">
       {% with messages = get_flashed_messages(with_categories=true) %}
         {% if messages %}
@@ -12,12 +12,12 @@
         {% endif %}
       {% endwith %}
     </div>
-  </div>
+
   
 <div class='container' id = "register">
 <form method= 'POST' action = "">
     {{ form2.hidden_tag() }}
-    <div class="form-group">
+    <div class="form-group mb-4">
         {{ form2.otp.label(class="form-control-label") }}
         {% if form2.otp.errors %}
             {{ form2.otp(class="form-control form-control-lg is-invalid") }}
@@ -30,7 +30,7 @@
             {{ form2.otp(class="form-control form-control-lg") }}
         {% endif %}
     </div>
-    <div class="form-group">
+    <div class="form-group mb-4 text-center">
         {{ form2.submit(class="btn btn-outline-info") }}
     </div>
 </form>

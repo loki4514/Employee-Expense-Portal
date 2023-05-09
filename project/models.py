@@ -22,7 +22,7 @@ class User(db.Model,UserMixin):
     name = db.Column(db.String(20),nullable=False)
     email = db.Column(db.String(20),unique=True,nullable=False)
     password = db.Column(db.String(60),nullable=False)
-    # flag = db.Column(db.Boolean, default=False, nullable=False)
+    flag = db.Column(db.Boolean, default=False, nullable=False)
     # image_file = db.Column(db.string(20),unique=True,nullable=False)
     
     # here serilaize the secret key which is valid for 30 minutes and many more
@@ -43,7 +43,7 @@ class User(db.Model,UserMixin):
         return User.query.get(id)
     
     def __repr__(self):
-        return f"User('{self.id},{self.name},{self.email}')"
+        return f"User('{self.id},{self.name},{self.email},{self.flag}')"
     
 # class Manager(db.Model):
 #     managerid = db.Column(db.Integer,primary_key = True)
@@ -56,13 +56,14 @@ class User(db.Model,UserMixin):
 #         return f"User('{self.username},{self.name},{self.email}')"
     
 class Employee(db.Model):
-    employeeid = db.Column(db.String(10),primary_key=True)
-    name = db.Column(db.String(20),nullable=False)
-    email = db.Column(db.String(20),unique=True,nullable=False)
+    employeeid = db.Column(db.String(20),primary_key=True)
+    name = db.Column(db.String(50),nullable=False)
+    email = db.Column(db.String(50),unique=True,nullable=False)
     password = db.Column(db.String(60),unique=True,nullable=False)
-    role = db.Column(db.String(5),nullable=False)
-    man_name = db.Column(db.String(30),nullable=False)
-    managerid = db.Column(db.String(10), nullable=False)
+    role = db.Column(db.String(10),nullable=False)
+    man_name = db.Column(db.String(50))
+    managerid = db.Column(db.String(20))
+    manager_email = db.Column(db.String(50))
     
     # def get_id(self):
     #     return str(self.employeeid)
@@ -85,13 +86,16 @@ class Employee(db.Model):
     
     
 class Expense(db.Model):
-    claimid = db.Column(db.String(20),primary_key = True,nullable = False)
+    claimid = db.Column(db.String(20),primary_key=True,nullable=False)
     empid = db.Column(db.String(20), nullable=False)
     date = db.Column(db.Date, nullable=False)
     amount = db.Column(db.Float, nullable=False)
     image_file = db.Column(db.String(20), nullable=False)
     managerid = db.Column(db.String(20), nullable=False)
+    manager_email = db.Column(db.String(50), nullable=False)
     status = db.Column(db.String(20), nullable=False, default='pending')
+    reason_for_rejection = db.Column(db.String(100))
+    
     
 
 

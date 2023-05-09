@@ -1,0 +1,71 @@
+{% extends 'index.html' %}
+{% block content%}
+<nav class="navbar navbar-expand-lg navbar-light bg-light blue">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">Hello {{session['name']}}</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a href="{{url_for('managers.manager')}}" class="nav-link a1" style="color: black;">Home</a>
+        </li>
+        <li class="nav-item">
+          <a href="{{url_for('managers.logout')}}" class="nav-link a1" style="color: black;">Log out</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="col-md-8 mx-auto text-center">
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          {% for category, message in messages %}
+            <div class="alert alert-{{ category }} text-info" id="alert-success">
+              {{ message }}
+            </div>
+          {% endfor %}
+        {% endif %}
+      {% endwith %}
+    </div>
+
+
+    <br>
+    <div class="container" id="register">
+      <form method="POST" action="" id="form">
+        {{form.hidden_tag()}}
+        <legend class="text-center mb-4">Delete Employee</legend>
+        <div class="form-group mb-2">
+            {{ form.email.label(class="form-control-label") }}
+    
+            {% if form.email.errors %}
+                {{ form.email(class="form-control form-control-lg is-invalid") }}
+                <div class="invalid-feedback">
+                    {% for error in form.email.errors %}
+                        <span>{{ error }}</span>
+                    {% endfor %}
+                </div>
+            {% else %}
+                {{ form.email(class="form-control form-control-lg") }}
+            {% endif %}
+        </div>
+    
+        <div class = "form-group text-center">
+        <button type="button" class="btn btn-outline-info" onclick="confirmDelete()">Delete</button>
+        </div>
+    
+    </form>
+    </div>
+    
+    <script>
+    function confirmDelete() {
+        if (confirm("Are you sure you want to delete this Admin?")) {
+            document.getElementById("form").submit();
+        }
+    }
+    </script>
+
+{% endblock %}
+        

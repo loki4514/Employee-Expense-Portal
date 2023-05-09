@@ -1,5 +1,23 @@
 {% extends 'index.html' %}
 {% block content %}
+<nav class="navbar navbar-expand-lg navbar-light bg-light blue">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">Hello, {{current_user.name}}</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a href="{{url_for('admins.admin')}}" class="nav-link a1" style="color: black;">Home</a>
+              </li>
+          <li class="nav-item">
+            <a href="{{url_for('admins.logout')}}" class="nav-link a1" style="color: black;">Log out</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
 <br>
 <div class="registration-box"> 
     <div class="container" id="register">
@@ -89,10 +107,19 @@
                             {{ form.managerid(class="form-control form-control-lg") }}
                         {% endif %}
                     </div>
-    
-    
-    
-    
+                    <div class="form-group mb-2">
+                        {{ form.manager_email.label(class="form-control-label") }}
+                        {% if form.manager_email.errors %}
+                            {{ form.manager_email(class="form-control form-control-lg is-invalid") }}
+                            <div class="invalid-feedback">
+                                {% for error in form.manager_email.errors %}
+                                    <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            {{ form.manager_email(class="form-control form-control-lg") }}
+                        {% endif %}
+                    </div>
                     <div class="form-group text-center">
                         {{ form.submit(class="btn btn-outline-info") }}
                     </div>

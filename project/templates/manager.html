@@ -9,13 +9,15 @@
     <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
       <ul class="navbar-nav">
         <li class="nav-item">
+          <a href="{{url_for('managers.delete_admin')}}" class="nav-link a1" style="color: black;">Delete Admin</a>
+        </li>
+        <li class="nav-item">
           <a href="{{url_for('managers.logout')}}" class="nav-link a1" style="color: black;">Log out</a>
         </li>
       </ul>
     </div>
   </div>
 </nav>
-
     <div class="col-md-8 mx-auto text-center">
       {% with messages = get_flashed_messages(with_categories=true) %}
         {% if messages %}
@@ -27,8 +29,6 @@
         {% endif %}
       {% endwith %}
     </div>
-
-
   <div class="container-fluid mt-5 mx-auto">
     <div class="row">
       <div class="col-sm-12 col-md-12 col-lg-12 text-center" style="background-color: #ECF2FF; padding: 10px;">
@@ -55,24 +55,26 @@
                   </a>
                 {% endif %}
               </td>
-            <td data-label="Status">
-              <div class="container text-center">
-                <form method="POST">
-                  {{ form.hidden_tag() }}
-                  <input type="hidden" name="claimid" value="{{ expense[3] }}">
-                  
-                  <div>
-                    {{ form.rejected(class="btn btn-outline-info btn-block mb-2 font-weight-bold") }}
-                  </div>
-                  
-                  <div>
-                    {{ form.accepted(class="btn btn-outline-info btn-block font-weight-bold") }}
-                  </div>
-                  
-                </form>
-              </div>
-
-            </td>
+              <td data-label="Status">
+                <div class="container text-center">
+                  <form method="POST">
+                    {{ form.hidden_tag() }}
+                    <input type="hidden" name="claimid" value="{{ expense[3] }}">
+                    
+                    <div class='mb-3'>
+                      {{ form.rejected(class="btn btn-outline-info btn-block mb-2 font-weight-bold", id="rejected-button") }}
+                    </div>
+                    
+                    <div class='mb-3'>
+                      {{ form.accepted(class="btn btn-outline-info btn-block font-weight-bold") }}
+                    </div>
+              
+                    <div class='mb-3' id="reason-for-rejection" style="display:none;">
+                      {{ form.reason_for_rejection.label }} {{ form.reason_for_rejection }}
+                    </div>
+                  </form>
+                </div>
+              </td>
             
             </tr>
             {% endfor %}
@@ -82,6 +84,20 @@
     </div>
   </div>
 
+  <script>
+    const rejectedButton = document.getElementById('rejected-button');
+    const reasonForRejection = document.getElementById('reason-for-rejection');
+    const form = document.querySelector('form');
+  
+    rejectedButton.addEventListener('click', function(event) {
+      event.preventDefault(); // prevent the default form submission
+      reasonForRejection.style.display = 'block';
+    });
+  
+    reasonForRejection.addEventListener('change', function() {
+      form.submit();
+    });
+  </script>
 
 <br>
   <div class="pagination justify-content-center" >
@@ -107,6 +123,4 @@
       <a class="btn btn-outline-info mb-4 disabled mx-1">&raquo;</a>
     {% endif %}
   </div>
-
 {% endblock %}
-        

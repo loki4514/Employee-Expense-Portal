@@ -16,22 +16,28 @@
 
 
 
-    <h1>Greetings from the Employee Expense Portal.</h1>
+    <h1>Employee Expense Portal.</h1>
     <br>
     <div style="display: flex; flex-direction: column; align-items: center;">
+      <div>
       <a href="{{ url_for('admins.admin') }}">
-        <button style="padding: 1rem 2rem; border: none; font-size: 1.2rem; margin: 0.5rem;">Admin</button>
+        <button style="padding: 10px 20px;">Admin</button>
       </a>
+      <div>
       <br>
+      </div>
       <a href="{{ url_for('employees.emp') }}">
-        <button style="padding: 1rem 2rem; border: none; font-size: 1.2rem; margin: 0.5rem;">Employee</button>
+        <button style="padding: 10px 20px;">Employee</button>
       </a>
+      <div>
       <br>
+      </div>
+      <div>
       <a href="{{ url_for('managers.manager_login') }}">
-        <button style="padding: 1rem 2rem; border: none; font-size: 1.2rem; margin: 0.5rem;">Manager</button>
+        <button style="padding: 10px 20px;">Manager</button>
       </a>
     </div>
-    
+    </div>
     
     {% endblock %}
     

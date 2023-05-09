@@ -5,6 +5,7 @@ from flask_login import LoginManager
 from flask_mail import Mail
 # mail server i need
 from project.config import Config
+from flask_migrate import Migrate
 
 
 # app = Flask(__name__)
@@ -63,7 +64,7 @@ from project.config import Config
 # login_manager.login_message_category = 'info'
 db = SQLAlchemy()
 bcrypt = Bcrypt()
-
+migrate = Migrate()
 user_login_manager = LoginManager()
 user_login_manager.login_view = 'admins.login'
 user_login_manager.login_message_category = 'info'
@@ -83,6 +84,7 @@ def create_app(config_class=Config):
     app.config.from_object(Config)
     
     db.init_app(app)
+    migrate.init_app(app,db)
     bcrypt.init_app(app)
     
     
