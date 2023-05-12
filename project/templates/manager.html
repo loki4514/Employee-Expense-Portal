@@ -48,16 +48,17 @@
               <td data-label="Amount to be claimed">{{ expense[1] }}</td>
               <td data-label="Picture/Files">
                 {% if expense[2].endswith('.pdf') %}
-                  <a href="{{ expense[2] }}" target="_blank" style="text-decoration:none;">PDF file</a>
+                    <a href="{{ get_picture(expense[2]) }}" target="_blank" style="text-decoration:none;">PDF file</a>
                 {% else %}
-                  <a href="{{ expense[2] }}" target="_blank">
-                    <img src="{{ expense[2] }}" width="100" height="100">
-                  </a>
+                    <a href="{{ get_picture(expense[2]) }}" target="_blank">
+                        <img src="{{ get_picture(expense[2]) }}" width="100" height="100">
+                    </a>
                 {% endif %}
-              </td>
+            </td>
+
               <td data-label="Status">
                 <div class="container text-center">
-                  <form method="POST">
+                  <form method="POST" id = "form">
                     {{ form.hidden_tag() }}
                     <input type="hidden" name="claimid" value="{{ expense[3] }}">
                     
@@ -66,16 +67,15 @@
                     </div>
                     
                     <div class='mb-3'>
-                      {{ form.accepted(class="btn btn-outline-info btn-block font-weight-bold") }}
+                      {{ form.accepted(class="btn btn-outline-info btn-block font-weight-bold",id="accepted-button") }}
                     </div>
               
-                    <div class='mb-3' id="reason-for-rejection" style="display:none;">
+                    <div class='mb-3' id="reason_for_rejection" style="display:none;">
                       {{ form.reason_for_rejection.label }} {{ form.reason_for_rejection }}
                     </div>
                   </form>
                 </div>
               </td>
-            
             </tr>
             {% endfor %}
           </tbody>
@@ -86,16 +86,23 @@
 
   <script>
     const rejectedButton = document.getElementById('rejected-button');
-    const reasonForRejection = document.getElementById('reason-for-rejection');
-    const form = document.querySelector('form');
+    const reasonForRejection = document.getElementById('reason_for_rejection');
+    const form = document.getElementById('form');
   
     rejectedButton.addEventListener('click', function(event) {
+      console.log(rejectedButton)
+      
+
       event.preventDefault(); // prevent the default form submission
+      console.log("hi   2")
       reasonForRejection.style.display = 'block';
     });
   
-    reasonForRejection.addEventListener('change', function() {
-      form.submit();
+    reasonForRejection.addEventListener('change', function(event) {
+      console.log(reasonForRejection)
+      event.preventDefault();
+      console.log("hic ")
+      return form.submit(); // submit the form when manager selects the dropdown button
     });
   </script>
 

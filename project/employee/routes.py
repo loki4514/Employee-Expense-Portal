@@ -5,6 +5,7 @@ from project.employee.forms import EmpLoginForm,ExpenseForm,UpdateExpenseForm,Re
 from project.models import Expense
 from project.employee.utils import save_picture,send_reset_email,send_claimid_mail_emp,send_claimid_mail_manager
 import random
+from datetime import datetime
 
 employees = Blueprint('employees',__name__)
 
@@ -35,18 +36,26 @@ def employee():
                                 managerid=session['managerid'],
                                 manager_email = session['manager_email'],
                                 reason_for_rejection = '-')
+            time = datetime.now()
+            print(f"Entering to the database {time}")
             db.session.add(expense)
+            print(f"added to the database {datetime.now()-time}")
             db.session.commit()
+            print(f"added to the database {datetime.now() - time}")
             flash('Expense has sent successfully!', 'success')
             employee = Employee.query.filter_by(employeeid=session['employeeid']).first()
+            print(f"Preparing for sending a mail {datetime.now() - time}")
             send_claimid_mail_emp(employee, expense)
+            print(f"Sent a mail to employee {datetime.now() - time}")
             send_claimid_mail_manager(employee, expense)
+            print(f"sent a mail to manager {datetime.now() - time}")
             return redirect(url_for('employees.approve'))
+        
         return render_template('employee.html', title = 'Expense Request',form=form)
     except Exception as e:
         # Log the error
         # Show a generic error message to the user
-        flash('An error occurred while processing your request. Please try again later.', 'error')
+        flash(f'An error occurred while processing your request. Please try again later. {str(e)}', 'error')
         # Redirect the user to a safe page
         return redirect(url_for('employees.emp'))
 
@@ -54,6 +63,7 @@ def employee():
 @employees.route("/emp",methods=["GET","POST"])
 def emp():
     form = EmpLoginForm()
+    
     try:
         if form.validate_on_submit():
             employee = Employee.query.filter_by(employeeid=form.employeeid.data).first()
@@ -62,6 +72,7 @@ def emp():
                 session["managerid"] = employee.managerid
                 session['name'] = employee.name
                 session['manager_email'] = employee.manager_email
+                
                 return redirect(url_for('employees.employee'))
             else:
                 flash('Login Unsuccessful. Please check Employee id and password', 'danger')
@@ -100,6 +111,8 @@ def approve():  # replace with the actual employee ID
 
 @employees.route("/rejected",methods=["GET","POST"])
 def rejected():
+    time = datetime.now()
+                
     try:
         if 'employeeid' not in session:
             return redirect(url_for('employees.emp'))
@@ -115,8 +128,9 @@ def rejected():
                 expense.image_file = save_picture(form.image_file.data, expense.image_file)
             expense.status = 'pending'
             expense.reason_for_rejection = '-'
-            flash("Expense is updated successfully. Wait for the Manager Response")
+            print(f"the time {time - datetime.now()}")
             db.session.commit()
+            flash("Expense is updated successfully. Wait for the Manager Response")
             return redirect(url_for('employees.approve'))
         elif request.method == 'GET':
             form.date.data = expense.date

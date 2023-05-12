@@ -2,8 +2,8 @@ from flask import Blueprint,session,render_template,redirect,url_for,flash,reque
 from project import db,bcrypt
 from project.manager.forms import ManagerLoginForm,StatusForm,DeleteAdmin
 from project.models import Expense,Employee,User
-import mimetypes
-from project.manager.utlis import send_reject,send_accept
+from datetime import datetime
+from project.manager.utlis import send_reject,send_accept,get_picture
 managers = Blueprint('managers',__name__)
 
 
@@ -34,18 +34,24 @@ def manager_login():
 def manager():
     if 'managerid' not in session:
         return redirect(url_for('managers.manager_login'))
-    
+
     try:
         page = request.args.get('page', 1, int)
         expenses = Expense.query.filter_by(managerid=session['managerid'], status='pending').paginate(page=page, per_page=5)
-        manager_list = [[str(expense.date), expense.amount, url_for('static', filename='bills/' + expense.image_file), expense.claimid] for expense in expenses]
+        time = datetime.now()
+        print(f"the manager list {expenses}")
+        print(f"starting timer {time}")
+        manager_list = [[str(expense.date), expense.amount, expense.image_file, expense.claimid] for expense in expenses]
+        print(f"the fetched time {datetime.now() - time}")
         form = StatusForm()
 
         if form.validate_on_submit():
             claimid = request.form.get("claimid")
             expense = Expense.query.filter_by(claimid=claimid, managerid=session['managerid'], status='pending').first()
+            print(f"the fetched time 2 {datetime.now() - time}")
             if expense:
                 employee = Employee.query.filter_by(employeeid=expense.empid).first()
+                print(f"the fetched time 3 {datetime.now() - time}")
                 if form.accepted.data == True:
                     expense.status = "accepted"
                     send_accept(employee, expense=expense)
@@ -53,19 +59,22 @@ def manager():
                     expense.status = "rejected"
                     expense.reason_for_rejection = form.reason_for_rejection.data
                     send_reject(employee, expense=expense)
-                db.session.commit()
+                
+                print(f"the end time {datetime.now() - time}")
                 flash("Expense status updated successfully.")
+                db.session.commit()
                 return redirect(url_for("managers.manager"))
             else:
                 flash("No response yet.")
                 return redirect(url_for("managers.manager"))
 
-        return render_template('manager.html',title = 'Expense Request', manager_list=manager_list, expenses=expenses, form=form)
+        return render_template('manager.html',title = 'Expense Request', manager_list=manager_list, expenses=expenses,get_picture=get_picture, form=form)
         
     except Exception as e:
         flash("An error occurred. Please try again later str{e}.")
         print(str(e))
         return redirect(url_for("managers.manager"))
+
 
 
 @managers.route("/delete_admin",methods = ["POST","GET"])

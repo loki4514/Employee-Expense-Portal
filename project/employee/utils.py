@@ -5,34 +5,46 @@ from flask import current_app,flash
 import secrets,os
 from flask import url_for, current_app
 from flask_mail import Message
+import boto3
 
+# def save_picture(form_picture, old_picture=None):
+#     random_hex = secrets.token_hex(8)
+#     _, f_ext = os.path.splitext(form_picture.filename)
+#     picture_fn = random_hex + f_ext
+#     bucket_name = "flasklara"
+#     s3 = boto3.resource("s3")
+#     picture_path = s3.Bucket(bucket_name).upload_fileobj(form_picture,picture_fn)
+#     # picture_path = os.path.join(current_app.root_path, 'static/bills', picture_fn)
+
+#     # Delete the old picture if it exists
+#     if old_picture:
+#         old_picture_path = os.path.join(current_app.root_path, 'static/bills', old_picture)
+#         if os.path.exists(old_picture_path):
+#             os.remove(old_picture_path)
+
+#     form_picture.save(picture_path)
+#     return picture_fn
 def save_picture(form_picture, old_picture=None):
+    # Generate a random filename
     random_hex = secrets.token_hex(8)
     _, f_ext = os.path.splitext(form_picture.filename)
     picture_fn = random_hex + f_ext
-    picture_path = os.path.join(current_app.root_path, 'static/bills', picture_fn)
+
+    # Upload the picture to S3
+    bucket_name = "flasklara"
+    session = boto3.Session(
+                    aws_access_key_id=os.environ.get('AWS_ACCESS_KEY_ID'),
+                    aws_secret_access_key=os.environ.get('AWS_SECRET_ACCESS_KEY'),
+                    region_name='ap-southeast-2')
+    s3 = session.resource('s3')
+    bucket = s3.Bucket(bucket_name)
+    bucket.put_object(Key=picture_fn, Body=form_picture, ContentType=form_picture.content_type)
 
     # Delete the old picture if it exists
     if old_picture:
-        old_picture_path = os.path.join(current_app.root_path, 'static/bills', old_picture)
-        if os.path.exists(old_picture_path):
-            os.remove(old_picture_path)
+        bucket.delete_objects(Delete={"Objects": [{"Key": old_picture}]})
 
-    form_picture.save(picture_path)
     return picture_fn
-
-# def send_reset_email(user):
-#     token = user.get_reset_index()
-#     msg = Message('Password Reset Password',sender = 'noreplydemo.com',
-#                 recipients= [user.email])
-    
-#     msg.body = f'''
-#     To reset your passowrd, visit the following link:
-#     {url_for('reset_token',token = token,_external=True)}
-    
-#     If you didn't make request then simply ignore this email and no change will be made.
-#     '''
-#     mail.send(msg)
 
 def send_reset_email(employee):
     try:
@@ -73,13 +85,13 @@ Thank you for your cooperation.
         # Log the error
         print(f"An error occurred while sending email: {str(e)}")
         # Show a message to the user that the email couldn't be sent
-        flash("An error occurred while sending email. Your claim has been submitted successfully.", 'warning')
+        flash("An error occurred while sending email for an employee. Your claim has been submitted successfully.", 'warning')
 
 def send_claimid_mail_manager(employee,expense):
     try:
         msg = Message('Mail Regarding Expense Request',
                         sender='noreply@demo.com',
-                        recipients=[employee.manager_mail]      ) #
+                        recipients=[employee.manager_email]      ) #
     
 
         msg.body = f'''
@@ -104,5 +116,5 @@ Lara Capital Management
         # Log the error
 
         # Show a message to the user that the email couldn't be sent
-        flash("An error occurred while sending email. Your claim has been submitted successfully.", 'warning')
+        flash("An error occurred while sending for an email for Manager. Your claim has been submitted successfully.", 'warning')
 

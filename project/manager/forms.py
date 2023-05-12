@@ -11,13 +11,14 @@ class ManagerLoginForm(FlaskForm):
 
 class StatusForm(FlaskForm):
     status_choices = [("Issue with Picture/File", "Issue with Picture/File"),
-                    ("Expired Date/Issue with the Date", "Expired Date/Issue with the Date"),
-                    ("Invalid Amount", "Invalid Amount")]
-    
+                      ("Expired Date/Issue with the Date", "Expired Date/Issue with the Date"),
+                      ("Invalid Amount", "Invalid Amount"),
+                      ("Non Acceptance", "Non Acceptance")]
     
     reason_for_rejection = SelectField('Status', choices=status_choices)
     rejected = SubmitField('Reject')
     accepted = SubmitField('Accept')
+    # submit_rejection = SubmitField('Submit Rejection')
     
     # def validate(self):
     #     if self.rejected.data and not self.reason_for_rejection.data:

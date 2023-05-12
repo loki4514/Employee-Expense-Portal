@@ -1,5 +1,6 @@
 six
 cffi
+boto3
 click
 Flask
 bcrypt

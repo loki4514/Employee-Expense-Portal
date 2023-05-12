@@ -1,10 +1,38 @@
 from project import mail
-from flask import current_app,flash
+from flask import current_app,flash,Response
 import secrets,os
 from flask import url_for, current_app
 from flask_mail import Message
+import os,boto3,mimetypes
 
 
+import base64
+def get_picture(file_name):
+    bucket_name = "flasklara"
+    session = boto3.Session(
+        aws_access_key_id=os.environ.get('AWS_ACCESS_KEY_ID'),
+        aws_secret_access_key=os.environ.get('AWS_SECRET_ACCESS_KEY'),
+        region_name='ap-southeast-2'
+    )
+    s3 = session.client('s3')
+    try:
+        content_type = 'image/png' if file_name.endswith('.png') \
+                                   else 'application/pdf' if file_name.endswith('.pdf') \
+                                   else 'image/jpg'
+        url = s3.generate_presigned_url(
+            'get_object',
+            Params={
+                'Bucket': bucket_name,
+                'Key': file_name,
+                'ResponseContentType': content_type
+            },
+        )
+        return url
+    except Exception as e:
+        print(f"Error retrieving image from S3: {e}")
+        return None
+    
+    
 def send_reject(employee, expense):
     try:
         msg = Message('Mail Regarding Expense Request',
