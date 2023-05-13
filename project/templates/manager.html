@@ -70,7 +70,7 @@
                       {{ form.accepted(class="btn btn-outline-info btn-block font-weight-bold",id="accepted-button") }}
                     </div>
               
-                    <div class='mb-3' id="reason_for_rejection" style="display:none;">
+                    <div class='mb-3' id="reason-for-rejection" style="display:none;">
                       {{ form.reason_for_rejection.label }} {{ form.reason_for_rejection }}
                     </div>
                   </form>
@@ -86,7 +86,7 @@
 
   <script>
     const rejectedButton = document.getElementById('rejected-button');
-    const reasonForRejection = document.getElementById('reason_for_rejection');
+    const reasonForRejection = document.getElementById('reason-for-rejection');
     const form = document.getElementById('form');
   
     rejectedButton.addEventListener('click', function(event) {

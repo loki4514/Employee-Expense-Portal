@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField,BooleanField,PasswordField,SubmitField,SelectField
+from wtforms import StringField,BooleanField,PasswordField,SubmitField,SelectField,TextAreaField
 from wtforms.validators import DataRequired,Length,Email
 
 class ManagerLoginForm(FlaskForm):
@@ -15,11 +15,13 @@ class StatusForm(FlaskForm):
                       ("Invalid Amount", "Invalid Amount"),
                       ("Non Acceptance", "Non Acceptance")]
     
-    reason_for_rejection = SelectField('Status', choices=status_choices)
+    reason_for_rejection = TextAreaField('Reason for rejection')
     rejected = SubmitField('Reject')
     accepted = SubmitField('Accept')
     # submit_rejection = SubmitField('Submit Rejection')
-    
+    def submit_reason(self, claim_id):
+        # implementation to submit the reason for rejection
+        pass
     # def validate(self):
     #     if self.rejected.data and not self.reason_for_rejection.data:
     #         self.reason_for_rejection.errors.append('Reason for rejection is required.')
