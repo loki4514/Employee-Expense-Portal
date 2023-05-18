@@ -54,6 +54,7 @@ def manager():
                 print(f"the fetched time 3 {datetime.now() - time}")
                 if form.accepted.data == True:
                     expense.status = "accepted"
+                    expense.reason_for_rejection = " "
                     send_accept(employee, expense=expense)
                 elif form.rejected.data == True:
                     expense.status = "rejected"

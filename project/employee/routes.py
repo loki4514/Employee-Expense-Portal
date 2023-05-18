@@ -119,23 +119,23 @@ def rejected():
         form = UpdateExpenseForm()
         expense = Expense.query.filter_by(empid=session["employeeid"], status="rejected").first()
         if expense and form.validate_on_submit():
-            print(expense)
-            if form.date.data:
-                expense.date = form.date.data
-            if form.amount.data:
-                expense.amount = form.amount.data
-            if form.image_file.data:
-                expense.image_file = save_picture(form.image_file.data, expense.image_file)
-            expense.status = 'pending'
-            expense.reason_for_rejection = '-'
-            print(f"the time {time - datetime.now()}")
-            db.session.commit()
-            flash("Expense is updated successfully. Wait for the Manager Response")
-            return redirect(url_for('employees.approve'))
+                if form.date.data:
+                    expense.date = form.date.data
+                if form.amount.data:
+                    expense.amount = form.amount.data
+                if form.image_file.data:
+                    expense.image_file = save_picture(form.image_file.data, expense.image_file)
+                expense.status = 'pending'
+                expense.reason_for_rejection = '-'
+                print(f"the time {time - datetime.now()}")
+                db.session.commit()
+                flash("Expense is updated successfully. Wait for the Manager Response")
+                return redirect(url_for('employees.approve'))
+            
         elif request.method == 'GET':
             form.date.data = expense.date
             form.amount.data = expense.amount
-            form.image_file.data = url_for('static', filename='bills/' + expense.image_file)
+            # form.image_file.data = url_for('static', filename='bills/' + expense.image_file)
         return render_template('rejected.html', form=form, expense=expense)
     except Exception as e:
         # log the exception and display a user-friendly error message

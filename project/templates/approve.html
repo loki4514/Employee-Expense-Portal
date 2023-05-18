@@ -57,8 +57,12 @@
                   {% if status[2] == 'pending' %}
                     <p class="text-center" style="color: blue;">Pending</p>
                   {% elif status[2] == 'rejected' %}
-                    <p class="text-center" style="color: red;">Rejected</p>
-                    <a href="{{ url_for('employees.rejected') }}" class="btn btn-outline-info">Update</a>
+                  <p class="text-center" style="color: red;">Rejected</p>
+                    {% if status[3] != 'Non Acceptance'  %}
+                      <a href="{{ url_for('employees.rejected') }}" class="btn btn-outline-info">Update</a>
+                    
+                      
+                    {% endif %}
                   {% elif status[2] == 'accepted' %}
                     <p class="text-center" style="color: green;">Approved</p>
                   {% endif %}

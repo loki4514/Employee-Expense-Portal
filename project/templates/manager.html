@@ -58,21 +58,25 @@
 
               <td data-label="Status">
                 <div class="container text-center">
-                  <form method="POST" id = "form">
+                  <form method="POST">
                     {{ form.hidden_tag() }}
                     <input type="hidden" name="claimid" value="{{ expense[3] }}">
-                    
                     <div class='mb-3'>
-                      {{ form.rejected(class="btn btn-outline-info btn-block mb-2 font-weight-bold", id="rejected-button") }}
+                      {{ form.rejected(class="btn btn-outline-info btn-block mb-2 font-weight-bold") }}
+                    </div>
+                    <div class='mb-3'>
+                      {{ form.accepted(class="btn btn-outline-info btn-block font-weight-bold") }}
+                    </div>
+                    <div class="mb-3">
+                      {{ form.reason_for_rejection.label(class="form-control-label") }}
+                      {{ form.reason_for_rejection(class="form-control form-control-lg is-invalid") }}
+                      <div class="invalid-feedback">
+                        {% for error in form.reason_for_rejection.errors %}
+                        <span>{{ error }}</span>
+                        {% endfor %}
+                      </div>
                     </div>
                     
-                    <div class='mb-3'>
-                      {{ form.accepted(class="btn btn-outline-info btn-block font-weight-bold",id="accepted-button") }}
-                    </div>
-              
-                    <div class='mb-3' id="reason-for-rejection" style="display:none;">
-                      {{ form.reason_for_rejection.label }} {{ form.reason_for_rejection }}
-                    </div>
                   </form>
                 </div>
               </td>
@@ -84,27 +88,7 @@
     </div>
   </div>
 
-  <script>
-    const rejectedButton = document.getElementById('rejected-button');
-    const reasonForRejection = document.getElementById('reason-for-rejection');
-    const form = document.getElementById('form');
-  
-    rejectedButton.addEventListener('click', function(event) {
-      console.log(rejectedButton)
-      
-
-      event.preventDefault(); // prevent the default form submission
-      console.log("hi   2")
-      reasonForRejection.style.display = 'block';
-    });
-  
-    reasonForRejection.addEventListener('change', function(event) {
-      console.log(reasonForRejection)
-      event.preventDefault();
-      console.log("hic ")
-      return form.submit(); // submit the form when manager selects the dropdown button
-    });
-  </script>
+ 
 
 <br>
   <div class="pagination justify-content-center" >
