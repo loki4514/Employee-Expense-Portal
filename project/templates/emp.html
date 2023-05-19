@@ -1,7 +1,6 @@
+<title>Employee Page</title>
 {% extends "index.html" %}
 {% block content %}
-
-
     <div class="col-md-8 mx-auto text-center">
         {% with messages = get_flashed_messages(with_categories=true) %}
         {% if messages %}
@@ -13,8 +12,6 @@
         {% endif %}
         {% endwith %}
     </div>
-
-
     <div class="container d-flex justify-content-center align-items-center mt-4" style="min-height: 100%;">
         <div class="card text-dark bg-light p-4 col-md-6" style="max-width: 30rem;">
           <div class="card-body">

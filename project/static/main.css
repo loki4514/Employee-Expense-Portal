@@ -143,3 +143,9 @@ th {
     opacity: 0;
   }
 }
+
+.light-blue-button {
+  background-color: lightblue;
+  color: white;
+  /* Add other button styles as needed */
+}

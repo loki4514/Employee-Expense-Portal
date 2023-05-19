@@ -1,6 +1,8 @@
 six
 cffi
+pytz
 boto3
+pyotp
 click
 Flask
 bcrypt
@@ -18,4 +20,5 @@ Flask-Mail
 Flask-Login
 Flask-Bcrypt
 itsdangerous
+email_validator
 Flask-SQLAlchemy

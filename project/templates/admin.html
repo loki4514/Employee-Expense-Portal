@@ -1,3 +1,4 @@
+<title>Admin Page</title>
 {% extends 'index.html' %}
 {% block content %}
 <nav class="navbar navbar-expand-lg navbar-light bg-light blue">
@@ -36,15 +37,15 @@
 <br>
 
 <div class="d-flex flex-wrap justify-content-center">
-  <a href="{{ url_for('admins.create') }}"><button >Create Employee</button></a>
+  <a href="{{ url_for('admins.create') }}"><button class="light-blue-button">Create Employee</button></a>
 </div>
 <br>
 <div class="d-flex flex-wrap justify-content-center">
-  <a href="{{ url_for('admins.update') }}"><button >Update Employee</button></a>
+  <a href="{{ url_for('admins.update') }}"><button class="light-blue-button">Update Employee</button></a>
 </div>
 <br>
 <div class="d-flex flex-wrap justify-content-center">
-  <a href="{{ url_for('admins.delete') }}"><button >Delete Employee</button></a>
+  <a href="{{ url_for('admins.delete') }}"><button class="light-blue-button">Delete Employee</button></a>
 </div>
 
 

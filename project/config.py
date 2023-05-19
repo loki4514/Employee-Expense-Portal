@@ -1,9 +1,9 @@
 import os
 # here every configuration are stored here
 class Config:
-    SECRET_KEY = '8e7b334da419398c10724c396620c7c4'
+    SECRET_KEY = os.environ.get('SECRET_KEY')
     # app secret key 
-    SQLALCHEMY_DATABASE_URI = 'sqlite:///site.db'
+    SQLALCHEMY_DATABASE_URI = os.environ.get('SQLALCHEMY_DATABASE_URI')
     # database so that 
     MAIL_SERVER =  'smtp.gmail.com'
     MAIL_PORT = 587
