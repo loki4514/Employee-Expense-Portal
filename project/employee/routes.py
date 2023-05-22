@@ -196,7 +196,6 @@ def reset_token(token):
         
 @employees.route("/logout")
 def logout():
-    
     session.pop("employeeid", None)
     session.pop("managerid", None)
     session.pop("name",None)
