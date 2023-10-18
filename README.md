@@ -35,7 +35,7 @@ The Employee Expense Portal consists of three main components:
 
 - Python 3.x installed
 - pip package manager
-- MongoDB database set up
+- SQL database set up
 
 
 ### 
