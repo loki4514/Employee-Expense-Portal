@@ -37,6 +37,9 @@ The Employee Expense Portal consists of three main components:
 - pip package manager
 - MongoDB database set up
 
+
+### 
+
 ### Installation
 
 1. Clone the repository:
@@ -50,6 +53,9 @@ git clone https://github.com/loki4514/Employee-Expense-Portal.git
 ```bash
 pip install -r requirements.txt
 ```
+
+### How to Configure Mail Server 
+youtube link :- https://www.youtube.com/watch?v=vutyTx7IaAI&list=PL-osiE80TeTs4UjLw5MM6OjgkjFeUxCYH&index=10
 
 ### Start the Flask application:
 ```bash
