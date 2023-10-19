@@ -41,7 +41,7 @@ The Employee Expense Portal consists of three main components:
 ### Website Snapshot
 <img src="![Screenshot (159)](https://github.com/loki4514/Employee-Expense-Portal/assets/80893814/fe6038e4-8a24-4850-ae62-29e95a98a293)">
 
-<img src="![Screenshot (160)](https://github.com/loki4514/Employee-Expense-Portal/assets/80893814/bf57c876-c5d6-4ad7-bda5-5222399bdcfc)">
+
 
 
 
